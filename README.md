@@ -51,3 +51,15 @@ foreach (var mailboxStub in mailboxes.Items)
 }
   
 ```
+
+###Field Selectors 
+
+Each endpoint returns a default set of fields based upon the given request. However, you can override this behavior by supplying one or more field selectors to explicitly request the data you need.
+
+Instead of returning a complete customer object, you could return just the ID and lastname.
+
+```csharp
+
+client.GetCustomer(123, new CustomerRequest {Fields = new[] {"id", "lastName"}});
+  
+```
