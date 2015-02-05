@@ -3,25 +3,25 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
 
 ##Implemented
 
-*Conversation
-    *List Conversations
-    *Get Conversations
-    *Get Attachment Data
-*Mailboxes
-    *List Mailboxes
-    *Get Mailbox
-    *Get Folders
-*Search
-    *Conversations
-    *Customers
-*Tags
-    *List Tags
-*Users
-    *List Users
-    *Get User
-    *List Users ny Mailbox
-*Workflows
-    *List Workflows
+* Conversation
+    * List Conversations
+    * Get Conversations
+    * Get Attachment Data
+* Mailboxes
+    * List Mailboxes
+    * Get Mailbox
+    * Get Folders
+* Search
+    * Conversations
+    * Customers
+* Tags
+    * List Tags
+* Users
+    * List Users
+    * Get User
+    * List Users ny Mailbox
+* Workflows
+    * List Workflows
 
 ##Examples 
 
