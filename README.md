@@ -3,6 +3,8 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
 
 ##Implemented
 
+###Help Desk API
+
 * Conversation
     * List Conversations
     * Get Conversations
