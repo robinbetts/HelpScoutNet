@@ -25,6 +25,10 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
 * Workflows
     * List Workflows
 
+###Docs API
+
+Nothing done yet
+
 ##Examples 
 
 ###Initialization of the client
