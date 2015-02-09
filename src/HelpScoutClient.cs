@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using HelpScoutNet.Model;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
+using Newtonsoft.Json.Linq;
+
 
 namespace HelpScoutNet
 {
@@ -105,19 +105,16 @@ namespace HelpScoutNet
 
         public Customer GetCustomer(int customerId, CustomerRequest requestArg = null)
         {
-            string endpoint = string.Format("customers{0}.json", customerId);
+            string endpoint = string.Format("customers/{0}.json", customerId);
 
             return Get<SingleItem<Customer>>(endpoint, requestArg).Item;
         }
-
-
-
 
         #endregion
 
         #region Search
 
-        public Paged<SearchConversation> ListSearchConversations(SearchRequest requestArg = null)
+        public Paged<SearchConversation> SearchConversations(SearchRequest requestArg = null)
         {
             string endpoint = "search/conversations.json";
 
@@ -200,14 +197,17 @@ namespace HelpScoutNet
                 queryString = ToQueryStringFormat(request.ToNameValueCollection());
 
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + queryString).Result;
+            string body = response.Content.ReadAsStringAsync().Result;
 
-            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {                
+                T result = JsonConvert.DeserializeObject<T>(body);
 
-            string message = response.Content.ReadAsStringAsync().Result;
+                return result;
+            }
             
-            T result = JsonConvert.DeserializeObject<T>(message);
-            
-            return result;
+            dynamic error = JObject.Parse(body);
+            throw new HelpScoutApiException(error.error.ToString(),(int)error.code);                                                                    
         }
 
         private static string ToQueryStringFormat(NameValueCollection nvc)
