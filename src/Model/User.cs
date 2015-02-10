@@ -17,13 +17,9 @@ namespace HelpScoutNet.Model
         public string Role { get; set; }
         public string Timezone { get; set; }
         public string PhotoUrl { get; set; }
-        
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime ModifiedAt { get; set; }
     }
+
+    
 }

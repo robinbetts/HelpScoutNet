@@ -1,21 +1,25 @@
 ﻿using System;
+using HelpScoutNet.Model;
 
 namespace HelpScoutNet
 {
     public class HelpScoutApiException : ApplicationException
     {
         public int Code { get; set; }
+        public HelpScoutError HelpScoutError { get; set; }
         
-        public HelpScoutApiException(string message, int code)
-            : base(message)
+        public HelpScoutApiException(HelpScoutError helpScoutError)
+            : base(helpScoutError.Error)
         {
-            Code = code;            
+            Code = helpScoutError.Code;
+            HelpScoutError = helpScoutError;
         }
 
-        public HelpScoutApiException(string message, int code, Exception innerException)
-            : base(message, innerException)
+        public HelpScoutApiException(HelpScoutError helpScoutError, Exception innerException)
+            : base(helpScoutError.Error, innerException)
         {
-            Code = code;
+            Code = helpScoutError.Code;
+            HelpScoutError = helpScoutError;
         }
 
     }

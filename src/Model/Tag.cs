@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,18 +11,13 @@ namespace HelpScoutNet.Model
 {
     public class Tag
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Slug { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
         public string Color { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
-        
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime ModifiedAt { get; set; }
     }
 }

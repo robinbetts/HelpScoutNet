@@ -12,17 +12,24 @@ namespace HelpScoutNet.Model
     {
         public int Id { get; set; }
         public int MailboxId { get; set; }
-        public string Type { get; set; }
-        public string Status { get; set; }
+        public WorkflowType Type { get; set; }
+        public WorkflowStatus Status { get; set; }
         public int Order { get; set; }
         public string Name { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime ModifiedAt { get; set; }
+    }
+
+    public enum WorkflowStatus
+    {
+        active,
+        inactive,
+        invalid
+    }
+
+    public enum WorkflowType
+    {
+        automatic,
+        manual
     }
 }

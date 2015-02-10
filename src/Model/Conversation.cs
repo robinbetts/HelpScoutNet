@@ -1,54 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace HelpScoutNet.Model
 {
-    public class Owner
+    public class MailboxRef
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public object Phone { get; set; }
-        public string Type { get; set; }
-    }
-
-    public class MailboxStub
-    {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Name { get; set; }
     }
 
     public class Person
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Type { get; set; }
+        public PersonType Type { get; set; }
     }
 
-    public class CreatedBy
+    public enum PersonType
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Type { get; set; }
+        user,
+        customer
     }
 
     public class Source
-    {
-        public string Type { get; set; }
+    {        
+        public SourceType Type { get; set; }
         public string Via { get; set; }
+    }
+
+    public enum SourceType
+    {
+        email,
+        web,
+        notification,
+        emailfwd,
+        api,
+        chat
     }
     
     public class Attachment
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string MimeType { get; set; }
         public string Filename { get; set; }
@@ -62,10 +62,7 @@ namespace HelpScoutNet.Model
     {
         public int Id { get; set; }
         public Person AssignedTo { get; set; }
-        public string Status { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public string Status { get; set; }        
         public DateTime CreatedAt { get; set; }
         public Person CreatedBy { get; set; }
         public Source Source { get; set; }
@@ -81,21 +78,44 @@ namespace HelpScoutNet.Model
         public List<string> Tags { get; set; }
     }
 
+    public enum ConversationType
+    {
+        email,
+        chat,
+        phone
+    }
+
+    public enum ConversationStatus
+    {
+        active,
+        pending,
+        closed,
+        spam
+    }
+
     public class Conversation
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+        
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public ConversationType Type { get; set; }
+        
         public string Folder { get; set; }
         public string IsDraft { get; set; }
         public int Number { get; set; }
-        public Owner Owner { get; set; }
-        public MailboxStub Mailbox { get; set; }
+        public Person Owner { get; set; }
+        public MailboxRef Mailbox { get; set; }
         public Person Customer { get; set; }
         public int ThreadCount { get; set; }
-        public string Status { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public ConversationStatus Status { get; set; }
+
         public string Subject { get; set; }
         public string Preview { get; set; }
-        public CreatedBy CreatedBy { get; set; }
+        public Person CreatedBy { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(IsoDateTimeConverter))]

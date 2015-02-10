@@ -9,7 +9,9 @@ using System.Text;
 using HelpScoutNet.Model;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 
 namespace HelpScoutNet
@@ -18,6 +20,24 @@ namespace HelpScoutNet
     {
         private readonly string _apiKey;
         private const string BaseUrl = "https://api.helpscout.net/v1/";
+
+        private JsonSerializerSettings _serializerSettings
+        {
+            get
+            {
+                var serializer = new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+
+                };
+                serializer.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+
+                return serializer;
+            }
+        }
 
         public HelpScoutClient(string apiKey)
         {
@@ -85,6 +105,12 @@ namespace HelpScoutNet
             return Get<SingleItem<Attachment>>(endpoint, requestArg).Item;
         }
 
+        public Conversation CreateConversation(Conversation conversation, bool reload = true)
+        {
+            string endpoint = "conversations.json";
+            return Post(endpoint, conversation, reload);
+        }
+
         #endregion
 
         #region Customers
@@ -110,6 +136,32 @@ namespace HelpScoutNet
             return Get<SingleItem<Customer>>(endpoint, requestArg).Item;
         }
 
+        /// <summary>
+        /// Create customer
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <param name="reload">if true return the new customer otherwise return the original customer</param>
+        /// <returns>if reload is true return the new customer otherwise return the original customer</returns>
+        public Customer CreateCustomer(Customer customer, bool reload = true)
+        {
+            string endpoint = "customers.json";
+
+            return Post(endpoint, customer, reload);
+        }
+
+        /// <summary>
+        /// Update customer
+        /// </summary>
+        /// <param name="customerId">the id of the customer to update</param>
+        /// <param name="customer">customer data to update</param>
+        /// <param name="reload">if true return the new customer otherwise return the original customer</param>
+        /// <returns>if reload is true return the new customer otherwise return the original customer</returns>
+        public Customer UpdateCustomer(int customerId, Customer customer, bool reload = true)
+        {
+            string endpoint = string.Format("customers/{0}.json", customerId);
+
+            return Put(endpoint, customer, reload);
+        }
         #endregion
 
         #region Search
@@ -188,9 +240,8 @@ namespace HelpScoutNet
 
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", _apiKey, "X"))));
+            var client = InitHttpClient();
+            
 
             string queryString = "";
             if (request != null)
@@ -200,14 +251,76 @@ namespace HelpScoutNet
             string body = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
-            {                
-                T result = JsonConvert.DeserializeObject<T>(body);
+            {
+                T result = JsonConvert.DeserializeObject<T>(body, _serializerSettings);
 
                 return result;
             }
+
+            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+            throw new HelpScoutApiException(error);                                                                 
+        }
+
+        private T Post<T>(string endpoint, T payload, bool reload) 
+        {
+            var client = InitHttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
+ 
+            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+            string body = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (reload)
+                {
+                    T result = JsonConvert.DeserializeObject<T>(body);
+                    return result;
+                }
+                else
+                {
+                    return payload;
+                }  
+            }
             
-            dynamic error = JObject.Parse(body);
-            throw new HelpScoutApiException(error.error.ToString(),(int)error.code);                                                                    
+            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+            throw new HelpScoutApiException(error);
+        }
+
+        private T Put<T>(string endpoint, T payload, bool reload)
+        {
+            var client = InitHttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
+
+            HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+            string body = response.Content.ReadAsStringAsync().Result;
+            
+            if (response.IsSuccessStatusCode)
+            {
+                if (reload)
+                {
+                    T result = JsonConvert.DeserializeObject<T>(body);
+                    return result;
+                }
+                else
+                {
+                    return payload;
+                }                
+            }
+
+            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+            throw new HelpScoutApiException(error);
+        }
+
+        private HttpClient InitHttpClient()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", _apiKey, "X"))));
+            return client;
         }
 
         private static string ToQueryStringFormat(NameValueCollection nvc)

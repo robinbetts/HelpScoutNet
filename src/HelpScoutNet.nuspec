@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/mathieukempe</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Fixed nuget package</releaseNotes>
+    <releaseNotes>Added HelpScountApiException</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Helpscout</tags>
   </metadata>

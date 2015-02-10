@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HelpScoutNet.Model
 {
@@ -14,13 +16,31 @@ namespace HelpScoutNet.Model
         public string FullName { get; set; }
         public List<string> Emails { get; set; }
         public string PhotoUrl { get; set; }
-        public string PhotoType { get; set; }
-        public string Gender { get; set; }
+        public PhotoType PhotoType { get; set; }         
+        public Gender Gender { get; set; }
         public string Age { get; set; }
         public string Organization { get; set; }
         public string JobTitle { get; set; }
         public string Location { get; set; }
         public string CreatedAt { get; set; }
         public string ModifiedAt { get; set; }
+    }
+
+    public enum PhotoType
+    {
+        unknown,
+        gravatar,
+        twitter,
+        facebook,
+        googleprofile,
+        googleplus,
+        linkedin
+    }
+
+    public enum Gender
+    {
+        unknown,
+        male,
+        female,        
     }
 }

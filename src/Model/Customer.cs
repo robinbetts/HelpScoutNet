@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -7,6 +8,7 @@ namespace HelpScoutNet.Model
 {
     public class Address
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public List<string> Lines { get; set; }
         public string City { get; set; }
@@ -25,6 +27,7 @@ namespace HelpScoutNet.Model
 
     public class SocialProfile
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Value { get; set; }
         public string Type { get; set; }
@@ -32,6 +35,7 @@ namespace HelpScoutNet.Model
 
     public class Email
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Value { get; set; }
         public string Location { get; set; }
@@ -39,6 +43,7 @@ namespace HelpScoutNet.Model
 
     public class Phone
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Value { get; set; }
         public string Location { get; set; }
@@ -46,33 +51,49 @@ namespace HelpScoutNet.Model
 
     public class Chat
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
-        public string Value { get; set; }
-        public string Type { get; set; }
+        public string Value { get; set; }                
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public ChatType? Type { get; set; }
+    }
+
+    public enum ChatType
+    {
+        aim,
+        gtalk,
+        icq,
+        xmpp,
+        msn,
+        skype,
+        yahoo,
+        qq,
+        other
     }
 
     public class Website
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string Value { get; set; }
     }
 
     public class Customer
     {
+        [DefaultValue(0)]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhotoUrl { get; set; }
-        public string PhotoType { get; set; }
+        public PhotoType PhotoType { get; set; }
         public string Gender { get; set; }
         public string Age { get; set; }
         public string Organization { get; set; }
         public string JobTitle { get; set; }
         public string Location { get; set; }
         public string Background { get; set; }
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
-        [JsonConverter(typeof(IsoDateTimeConverter))]
         public DateTime ModifiedAt { get; set; }
         public Address Address { get; set; }
         public List<SocialProfile> SocialProfiles { get; set; }

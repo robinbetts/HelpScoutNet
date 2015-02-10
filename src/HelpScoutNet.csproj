@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelpScoutClient.cs" />
+    <Compile Include="HelpScoutWebhookHelper.cs" />
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="HelpScoutApiException.cs" />
+    <Compile Include="Model\HelpScoutError.cs" />
     <Compile Include="Model\Mailbox.cs" />
     <Compile Include="Model\Paged.cs" />
     <Compile Include="Model\SearchConversation.cs" />
