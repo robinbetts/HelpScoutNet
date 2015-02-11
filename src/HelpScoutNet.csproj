@@ -63,6 +63,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Request\CustomerRequest.cs" />
     <Compile Include="Request\FieldRequest.cs" />
+    <Compile Include="Request\CreateCustomerRequest.cs" />
+    <Compile Include="Request\PostOrPutRequest.cs" />
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />

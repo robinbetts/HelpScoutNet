@@ -105,10 +105,16 @@ namespace HelpScoutNet
             return Get<SingleItem<Attachment>>(endpoint, requestArg).Item;
         }
 
-        public Conversation CreateConversation(Conversation conversation, bool reload = true)
+        public Conversation CreateConversation(Conversation conversation, bool imported = false, bool autoReply = false, bool reload = true)
         {
             string endpoint = "conversations.json";
-            return Post(endpoint, conversation, reload);
+            return Post(endpoint, conversation, new CreateCustomerRequest{AutoReply = autoReply, Reload = reload, Imported = imported});
+        }
+
+        public Conversation UpdateConversation(Conversation conversation, bool reload = true)
+        {
+            string endpoint = "conversations.json";
+            return Post(endpoint, conversation, new PostOrPutRequest { Reload = reload });
         }
 
         #endregion
@@ -146,7 +152,7 @@ namespace HelpScoutNet
         {
             string endpoint = "customers.json";
 
-            return Post(endpoint, customer, reload);
+            return Post(endpoint, customer, new PostOrPutRequest { Reload = reload });
         }
 
         /// <summary>
@@ -160,7 +166,7 @@ namespace HelpScoutNet
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
-            return Put(endpoint, customer, reload);
+            return Put(endpoint, customer, new PostOrPutRequest{ Reload = reload});
         }
         #endregion
 
@@ -242,12 +248,7 @@ namespace HelpScoutNet
         {
             var client = InitHttpClient();
             
-
-            string queryString = "";
-            if (request != null)
-                queryString = ToQueryStringFormat(request.ToNameValueCollection());
-
-            HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + queryString).Result;
+            HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
@@ -261,19 +262,19 @@ namespace HelpScoutNet
             throw new HelpScoutApiException(error);                                                                 
         }
 
-        private T Post<T>(string endpoint, T payload, bool reload) 
+        private T Post<T>(string endpoint, T payload, IPostOrPutRequest request) 
         {
             var client = InitHttpClient();
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
- 
-            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+
+            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
             string body = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
             {
-                if (reload)
+                if (request.Reload)
                 {
                     T result = JsonConvert.DeserializeObject<T>(body);
                     return result;
@@ -287,20 +288,20 @@ namespace HelpScoutNet
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
             throw new HelpScoutApiException(error);
         }
-
-        private T Put<T>(string endpoint, T payload, bool reload)
+        
+        private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             var client = InitHttpClient();
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
 
-            HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+            HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
             string body = response.Content.ReadAsStringAsync().Result;
             
             if (response.IsSuccessStatusCode)
             {
-                if (reload)
+                if (request.Reload)
                 {
                     T result = JsonConvert.DeserializeObject<T>(body);
                     return result;
@@ -323,8 +324,14 @@ namespace HelpScoutNet
             return client;
         }
 
-        private static string ToQueryStringFormat(NameValueCollection nvc)
+        private static string ToQueryString(IRequest request)
         {
+            NameValueCollection nvc = null;            
+            if (request != null)
+            {
+                nvc = request.ToNameValueCollection();
+            }
+                
             if(nvc == null) 
                 return string.Empty;
 
