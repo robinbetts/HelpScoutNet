@@ -67,6 +67,56 @@ foreach (var mailboxStub in mailboxes.Items)
   
 ```
 
+###Create conversation
+```csharp
+var newConv = client.CreateConversation(new Conversation
+                {
+                    Type = ConversationType.email,
+                    Subject = "Testing the Helpscout API Mathieu",
+                    Mailbox = new MailboxRef
+                    {
+                        Id = 38556
+                    },
+                    Status = ConversationStatus.active,
+                    Customer = new Person
+                    {
+                        Email = "johnappleseed@somemail.com",
+                    },
+
+                    Threads = new List<Thread>{
+                        new Thread
+                        {
+                            Type = ThreadType.message,
+                            Body = "This is the body of the email \n something else" + Environment.NewLine + "and again",
+                            Status = ThreadStatus.active,
+                            CreatedBy = new Person
+                            {    
+                                Id = 60895,
+                                Type = PersonType.user,
+                                Email = "mathieu@somemail.com"
+                            } 
+                        }
+                     }
+
+                });
+
+```
+###Add a note, create thread
+```csharp
+var thread = client.CreateThread(newconv.Id, new Thread
+                {
+                    CreatedBy = new Person
+                    {
+                        Id = 60895,
+                        Type = PersonType.user,
+                        Email = "mathieu@somemail.com"
+                    },
+                    Type = ThreadType.note,
+                    Body = "This is a note from API",
+                    Status = ThreadStatus.active
+                });
+```
+
 ###Field Selectors 
 
 Each endpoint returns a default set of fields based upon the given request. However, you can override this behavior by supplying one or more field selectors to explicitly request the data you need.
