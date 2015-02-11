@@ -10,12 +10,13 @@ namespace HelpScoutNet.Model
         public string Number { get; set; }
         public int MailboxId { get; set; }
         public string Subject { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public ConversationStatus Status { get; set; }
         public int ThreadCount { get; set; }
         public string Preview { get; set; }
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
 
     }
 }

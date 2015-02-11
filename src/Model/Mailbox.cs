@@ -15,7 +15,7 @@ namespace HelpScoutNet.Model
         public int UserId { get; set; }
         public int TotalCount { get; set; }
         public int ActiveCount { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 
     public class Mailbox
@@ -25,8 +25,8 @@ namespace HelpScoutNet.Model
         public string Name { get; set; }
         public string Slug { get; set; }
         public string Email { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
         public List<Folder> Folders { get; set; }
     }
 }

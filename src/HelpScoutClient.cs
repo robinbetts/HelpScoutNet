@@ -30,8 +30,7 @@ namespace HelpScoutNet
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     NullValueHandling = NullValueHandling.Ignore,
                     DefaultValueHandling = DefaultValueHandling.Ignore,
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,                    
                 };
                 serializer.Converters.Add(new StringEnumConverter {CamelCaseText = true});
 
@@ -115,6 +114,13 @@ namespace HelpScoutNet
         {
             string endpoint = "conversations.json";
             return Post(endpoint, conversation, new PostOrPutRequest { Reload = reload });
+        }
+
+        public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
+        {
+            string endpoint = string.Format("conversations/{0}.json",conversationId);
+
+            return Post(endpoint, thread, new PostOrPutRequest { Reload = reload });
         }
 
         #endregion
@@ -259,7 +265,7 @@ namespace HelpScoutNet
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error);                                                                 
+            throw new HelpScoutApiException(error, body);                                                                 
         }
 
         private T Post<T>(string endpoint, T payload, IPostOrPutRequest request) 
@@ -276,7 +282,7 @@ namespace HelpScoutNet
             {
                 if (request.Reload)
                 {
-                    T result = JsonConvert.DeserializeObject<T>(body);
+                    T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
                     return result;
                 }
                 else
@@ -286,7 +292,7 @@ namespace HelpScoutNet
             }
             
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error);
+            throw new HelpScoutApiException(error, body);
         }
         
         private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
@@ -303,7 +309,7 @@ namespace HelpScoutNet
             {
                 if (request.Reload)
                 {
-                    T result = JsonConvert.DeserializeObject<T>(body);
+                    T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
                     return result;
                 }
                 else
@@ -313,7 +319,7 @@ namespace HelpScoutNet
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error);
+            throw new HelpScoutApiException(error, body);
         }
 
         private HttpClient InitHttpClient()

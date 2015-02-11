@@ -17,7 +17,7 @@ namespace HelpScoutNet.Model
         public string Name { get; set; }
         public int Count { get; set; }
         public string Color { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 }

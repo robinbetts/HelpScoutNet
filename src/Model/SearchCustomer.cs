@@ -16,7 +16,9 @@ namespace HelpScoutNet.Model
         public string FullName { get; set; }
         public List<string> Emails { get; set; }
         public string PhotoUrl { get; set; }
-        public PhotoType PhotoType { get; set; }         
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public PhotoType PhotoType { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public Gender Gender { get; set; }
         public string Age { get; set; }
         public string Organization { get; set; }

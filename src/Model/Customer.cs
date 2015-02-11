@@ -18,11 +18,11 @@ namespace HelpScoutNet.Model
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(IsoDateTimeConverter))]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 
     public class SocialProfile
@@ -86,6 +86,7 @@ namespace HelpScoutNet.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhotoUrl { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public PhotoType PhotoType { get; set; }
         public string Gender { get; set; }
         public string Age { get; set; }
@@ -93,8 +94,8 @@ namespace HelpScoutNet.Model
         public string JobTitle { get; set; }
         public string Location { get; set; }
         public string Background { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
         public Address Address { get; set; }
         public List<SocialProfile> SocialProfiles { get; set; }
         public List<Email> Emails { get; set; }

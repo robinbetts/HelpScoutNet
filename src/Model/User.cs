@@ -17,8 +17,8 @@ namespace HelpScoutNet.Model
         public string Role { get; set; }
         public string Timezone { get; set; }
         public string PhotoUrl { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 
     

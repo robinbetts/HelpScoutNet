@@ -56,6 +56,7 @@
     <Compile Include="Model\SearchConversation.cs" />
     <Compile Include="Model\SearchCustomer.cs" />
     <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\Thread.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\Workflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

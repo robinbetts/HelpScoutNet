@@ -12,12 +12,14 @@ namespace HelpScoutNet.Model
     {
         public int Id { get; set; }
         public int MailboxId { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public WorkflowType Type { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public WorkflowStatus Status { get; set; }
         public int Order { get; set; }
         public string Name { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
     }
 
     public enum WorkflowStatus
