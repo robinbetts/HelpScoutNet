@@ -113,7 +113,7 @@ namespace HelpScoutNet
         public Conversation UpdateConversation(Conversation conversation, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json", conversation.Id);
-            return Post(endpoint, conversation, new PostOrPutRequest { Reload = reload });
+            return Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
         }
 
         public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
