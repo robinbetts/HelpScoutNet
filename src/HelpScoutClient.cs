@@ -117,7 +117,7 @@ namespace HelpScoutNet
         {
             string endpoint = string.Format("conversations/{0}.json",conversationId);
 
-            return Post(endpoint, thread, new PostOrPutRequest { Reload = reload });
+            return Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
         }
 
         #endregion
