@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace HelpScoutNet.Request
 {
