@@ -10,7 +10,6 @@ using HelpScoutNet.Model;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 
@@ -64,7 +63,7 @@ namespace HelpScoutNet
 
         #region Conversations
 
-        public Paged<Conversation> ListConservations(int mailboxId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversations(int mailboxId, ConversationRequest requestArg = null)
         {
             
             string endpoint = string.Format("mailboxes/{0}/conversations.json", mailboxId);
@@ -72,21 +71,21 @@ namespace HelpScoutNet
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConservationsInFolder(int mailboxId, int folderId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversationsInFolder(int mailboxId, int folderId, ConversationRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/folders/{1}/conversations.json", mailboxId, folderId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConservationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
         {            
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, customerId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConservationsForUser(int mailboxId, int userId, FieldRequest requestArg = null)
+        public Paged<Conversation> ListConversationsForUser(int mailboxId, int userId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, userId);
             return Get<Paged<Conversation>>(endpoint, requestArg);
