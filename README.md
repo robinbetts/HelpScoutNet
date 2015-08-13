@@ -12,6 +12,10 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
     * Create Conversation
     * Update Conversation
     * Create Thread
+    * Delete Conversation
+    * Delete Note
+    * Create Attachment
+    * Delete Attachment
 * Customers
    * List Customers
    * List Mailbox Customers
@@ -101,6 +105,11 @@ var newConv = client.CreateConversation(new Conversation
                 });
 
 ```
+### Delete a conversation
+```csharp
+client.DeleteConversation(111947647);
+```
+
 ###Add a note, create thread
 ```csharp
 var thread = client.CreateThread(newconv.Id, new Thread
@@ -116,6 +125,45 @@ var thread = client.CreateThread(newconv.Id, new Thread
                     Status = ThreadStatus.active
                 });
 ```
+
+###Create an attachment
+```csharp
+
+Byte[] bytes = File.ReadAllBytes(@"C:\Users\mathieu.kempe.SELZ\Desktop\sift-logo.png");
+String file = Convert.ToBase64String(bytes);
+
+string fileHash = client.CreateAttachment(new CreateAttachmentRequest
+                                          {
+                                             FileName = "sift-logo.png",
+                                             MimeType = "image/png",
+                                             Data = file
+                                          });
+
+```
+
+To add the attachment to a new conversation
+
+```csharp
+ var newConv = client.CreateConversation(new Conversation
+  {
+      ...
+      Threads = new List<Thread>{
+                        new Thread
+                        {
+                            ...
+                            Attachments = new List<Attachment>
+                            {
+                                new Attachment
+                                {
+                                    Hash = fileHash
+                                }
+                            }
+                        }
+                     }
+               });
+               
+```
+
 
 ###Field Selectors 
 
