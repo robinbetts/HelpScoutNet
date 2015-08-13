@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting;
 using System.Text;
 using HelpScoutNet.Model;
 using HelpScoutNet.Request;
@@ -113,11 +114,39 @@ namespace HelpScoutNet
             return Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
         }
 
+        public void DeleteConversation(int id)
+        {
+            string endpoint = string.Format("conversations/{0}.json", id);
+
+            Delete(endpoint);
+        }
+
+        public void DeleteNote(int id)
+        {
+            string endpoint = string.Format("notes/{0}.json", id);
+
+            Delete(endpoint);
+        }
+
         public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json",conversationId);
 
             return Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
+        }
+
+        public string CreateAttachment(CreateAttachmentRequest request)
+        {
+            string endpoint = "attachments.json";
+
+            return PostAttachment(endpoint, request);
+        }
+
+        public void DeleteAttachment(string id)
+        {
+            string endpoint = string.Format("attachments/{0}.json", id);
+
+            Delete(endpoint);
         }
 
         #endregion
@@ -243,9 +272,10 @@ namespace HelpScoutNet
 
             return Get<Paged<Workflow>>(endpoint, requestArg);
         }
-
-
+        
         #endregion
+
+       
 
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
@@ -263,6 +293,28 @@ namespace HelpScoutNet
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
             throw new HelpScoutApiException(error, body);                                                                 
+        }
+
+        private string PostAttachment(string endpoint, CreateAttachmentRequest request)
+        {
+            var client = InitHttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var jsonPayload = JsonConvert.SerializeObject(request, _serializerSettings);
+
+            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+            string body = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                dynamic file = JsonConvert.DeserializeObject(body);
+
+                return file.item.hash;
+            }
+
+            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+            throw new HelpScoutApiException(error, body);
         }
 
         private T Post<T>(string endpoint, T payload, IPostOrPutRequest request) 
@@ -317,6 +369,20 @@ namespace HelpScoutNet
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
             throw new HelpScoutApiException(error, body);
+        }
+
+        private void Delete(string endpoint)
+        {
+            var client = InitHttpClient();
+
+            var response = client.DeleteAsync(BaseUrl + endpoint).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string body = response.Content.ReadAsStringAsync().Result;
+                var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+                throw new HelpScoutApiException(error, body);
+            }
         }
 
         private HttpClient InitHttpClient()

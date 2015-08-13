@@ -53,6 +53,7 @@ namespace HelpScoutNet.Model
     {
         [DefaultValue(0)]
         public int Id { get; set; }
+        public string Hash { get; set; }
         public string MimeType { get; set; }
         public string Filename { get; set; }
         public int Size { get; set; }
