@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Model.Report.Common
 {
-    public class DatesAndcounts
+    public class DatesAndCounts
     {
         public List<DateAndCount> Current { get; set; }
         public List<DateAndCount> Previous { get; set; }

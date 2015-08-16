@@ -19,17 +19,17 @@ namespace HelpScoutNet.Model.Report.Conversations
         public CustomerStats Customer { get; set; }
         public SavedReplyStats Replies { get; set; }
         public WorkFlowStats WorkFlows { get; set; }
-    }
 
-    public class TimeRangeStats
-    {
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-        public int TotalConversations { get; set; }
-        public int ConversationsCreated { get; set; }
-        public int NewConversations { get; set; }
-        public int Customers { get; set; }
-        public int ConversationsPerDay { get; set; }
+        public class TimeRangeStats
+        {
+            public DateTime? StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public int TotalConversations { get; set; }
+            public int ConversationsCreated { get; set; }
+            public int NewConversations { get; set; }
+            public int Customers { get; set; }
+            public int ConversationsPerDay { get; set; }
+        }
     }
 
     private class MultipleTimeRangeStats
