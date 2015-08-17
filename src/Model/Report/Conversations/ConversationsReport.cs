@@ -32,7 +32,7 @@ namespace HelpScoutNet.Model.Report.Conversations
         }
     }
 
-    private class MultipleTimeRangeStats
+    public class MultipleTimeRangeStats
     {
         public double NewConversations { get; set; }
         public double TotalConversations { get; set; }
@@ -41,13 +41,13 @@ namespace HelpScoutNet.Model.Report.Conversations
         public double ConversationsPerDay { get; set; }
     }
 
-    private class TagStats
+    public class TagStats
     {
         public int Count { get; set; }
         public List<TagStat> Top { get; set; }
     }
 
-    private class TagStat
+    public class TagStat
     {
         public string Name { get; set; }
         public int ID { get; set; }
@@ -58,13 +58,13 @@ namespace HelpScoutNet.Model.Report.Conversations
         public double DeltaPercent { get; set; }
     }
 
-    private class CustomerStats
+    public class CustomerStats
     {
         public int Count { get; set; }
         public List<CustomerStat> Top { get; set; }
     }
 
-    private class CustomerStat
+    public class CustomerStat
     {
         public string Name { get; set; }
         public int ID { get; set; }
@@ -75,13 +75,13 @@ namespace HelpScoutNet.Model.Report.Conversations
         public double DeltaPercent { get; set; }
     }
 
-    private class SavedReplyStats
+    public class SavedReplyStats
     {
         public int Count { get; set; }
         public List<SavedReplyStat> replies { get; set; }
     }
 
-    private class SavedReplyStat
+    public class SavedReplyStat
     {
         public string Name { get; set; }
         public int ID { get; set; }
@@ -93,13 +93,13 @@ namespace HelpScoutNet.Model.Report.Conversations
         public double DeltaPercent { get; set; }
     }
 
-    private class WorkFlowStats
+    public class WorkFlowStats
     {
         public int Count { get; set; }
         public List<WorkFlowStat> Top { get; set; }
     }
 
-    private class WorkFlowStat
+    public class WorkFlowStat
     {
         public string Name { get; set; }
         public int ID { get; set; }

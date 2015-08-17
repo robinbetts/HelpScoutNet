@@ -53,6 +53,22 @@
     <Compile Include="Model\HelpScoutError.cs" />
     <Compile Include="Model\Mailbox.cs" />
     <Compile Include="Model\Paged.cs" />
+    <Compile Include="Model\Report\Common\DateAndCount.cs" />
+    <Compile Include="Model\Report\Common\DateAndElapsedTime.cs" />
+    <Compile Include="Model\Report\Common\DatesAndCounts.cs" />
+    <Compile Include="Model\Report\Common\DatesAndElapsedTime.cs" />
+    <Compile Include="Model\Report\Common\Rating.cs" />
+    <Compile Include="Model\Report\Common\Tag.cs" />
+    <Compile Include="Model\Report\Conversations\Conversation.cs" />
+    <Compile Include="Model\Report\Conversations\ConversationsReport.cs" />
+    <Compile Include="Model\Report\Conversations\DayStats.cs" />
+    <Compile Include="Model\Report\Docs\DocsReport.cs" />
+    <Compile Include="Model\Report\Happiness\HappinessReport.cs" />
+    <Compile Include="Model\Report\Productivity\ProductivityReport.cs" />
+    <Compile Include="Model\Report\Team\TeamReport.cs" />
+    <Compile Include="Model\Report\User\ConversationStats.cs" />
+    <Compile Include="Model\Report\User\UserHappiness.cs" />
+    <Compile Include="Model\Report\User\UserReport.cs" />
     <Compile Include="Model\SearchConversation.cs" />
     <Compile Include="Model\SearchCustomer.cs" />
     <Compile Include="Model\Tag.cs" />
@@ -69,11 +85,13 @@
     <Compile Include="Request\PostOrPutRequest.cs" />
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
+    <Compile Include="Request\Report\ReportCompareRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

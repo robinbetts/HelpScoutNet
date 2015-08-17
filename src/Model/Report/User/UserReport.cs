@@ -8,8 +8,8 @@ namespace HelpScoutNet.Model.Report.User
 {
     public class UserReport
     {
-        public List<Tag> FilterTags { get; set; }
-        public User User { get; set; }
+        public List<HelpScoutNet.Model.Report.Common.Tag> FilterTags { get; set; }
+        public User user { get; set; }
         public TimeRangeStats Current { get; set; }
         public TimeRangeStats Previous { get; set; }
         public MultipleTimeRangeStats Deltas { get; set; }
@@ -46,24 +46,24 @@ namespace HelpScoutNet.Model.Report.User
             public double ConversationsPerDay { get; set; }
             public int BusiestDay { get; set; }
         }
-    }
 
-    private class MultipleTimeRangeStats
-    {
-        public double TotalConversations { get; set; }
-        public double CustomersHelped { get; set; }
-        public double HappinessScore { get; set; }
-        public double RepliesPerDay { get; set; }
-        public double ResolvedOnFirstReply { get; set; }
-        public double HandleTime { get; set; }
-        public double ConversationsPerDay { get; set; }
-        public double Resolved { get; set; }
-        public double RepliesToResolve { get; set; }
-        public double ActiveConversations { get; set; }
-        public double TotalReplies { get; set; }
-        public double Closed { get; set; }
-        public double ResponseTime { get; set; }
-        public double ResolutionTime { get; set; }
-        public double ConversationsCreated { get; set; }
+        public class MultipleTimeRangeStats
+        {
+            public double TotalConversations { get; set; }
+            public double CustomersHelped { get; set; }
+            public double HappinessScore { get; set; }
+            public double RepliesPerDay { get; set; }
+            public double ResolvedOnFirstReply { get; set; }
+            public double HandleTime { get; set; }
+            public double ConversationsPerDay { get; set; }
+            public double Resolved { get; set; }
+            public double RepliesToResolve { get; set; }
+            public double ActiveConversations { get; set; }
+            public double TotalReplies { get; set; }
+            public double Closed { get; set; }
+            public double ResponseTime { get; set; }
+            public double ResolutionTime { get; set; }
+            public double ConversationsCreated { get; set; }
+        }
     }
 }

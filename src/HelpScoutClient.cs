@@ -10,6 +10,8 @@ using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using HelpScoutNet.Model.Report.User;
+using HelpScoutNet.Request.Report;
 
 
 namespace HelpScoutNet
@@ -275,11 +277,24 @@ namespace HelpScoutNet
         
         #endregion
 
-       
+        #region Reports
+
+        public UserReport GetUserOverallReport(ReportCompareRequest requestArg = null )
+        {
+            string endpoint = string.Format("reports/user.json");
+            return Get<SingleItem<UserReport>>(endpoint, requestArg).Item;
+        }
+
+        #endregion
+
+
+
 
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
+
+            string test = BaseUrl + endpoint + ToQueryString(request);
             
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;

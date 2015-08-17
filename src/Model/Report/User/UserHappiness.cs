@@ -27,16 +27,18 @@ namespace HelpScoutNet.Model.Report.User
             public double RatingsPercent { get; set; }
             public double HappinessScore { get; set; }
         }
+
+
+        public class MultipleTimeRangeStats
+        {
+            public double Great { get; set; }
+            public double Okay { get; set; }
+            public double NotGood { get; set; }
+            public double GreatCount { get; set; }
+            public double OkayCount { get; set; }
+            public double NotGoodCount { get; set; }
+            public double HappinessScore { get; set; }
+        }
     }
 
-    private class MultipleTimeRangeStats
-    {
-        public double Great { get; set; }
-        public double Okay { get; set; }
-        public double NotGood { get; set; }
-        public double GreatCount { get; set; }
-        public double OkayCount { get; set; }
-        public double NotGoodCount { get; set; }
-        public double HappinessScore { get; set; }
-    }
 }

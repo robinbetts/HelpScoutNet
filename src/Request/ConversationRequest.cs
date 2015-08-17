@@ -18,7 +18,7 @@ namespace HelpScoutNet.Request
             
             if (!string.IsNullOrEmpty(Status))
                 Nv.Add("status", Status);
-            if (!ModifiedSince.HasValue)
+            if (ModifiedSince.HasValue)
                 Nv.Add("modifiedSince", ModifiedSince.Value.ToIso8601());
 
             return Nv;
