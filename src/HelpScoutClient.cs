@@ -12,6 +12,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using HelpScoutNet.Model.Report.User;
 using HelpScoutNet.Request.Report;
+using HelpScoutNet.Model.Report.User.UserReports;
 
 
 namespace HelpScoutNet
@@ -225,43 +226,43 @@ namespace HelpScoutNet
 
         #region Tag
 
-        public Paged<Tag> ListTags(PageRequest requestArg = null)
+        public Paged<HelpScoutNet.Model.Tag> ListTags(PageRequest requestArg = null)
         {
             string endpoint = "tags.json";
 
-            return Get<Paged<Tag>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.Tag>>(endpoint, requestArg);
         }
 
         #endregion
 
         #region Users
 
-        public Paged<User> ListUsers(PageRequest requestArg = null)
+        public Paged<HelpScoutNet.Model.User> ListUsers(PageRequest requestArg = null)
         {
             string endpoint = "users.json";
 
-            return Get<Paged<User>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public User GetUser(int userId, FieldRequest requestArg)
+        public HelpScoutNet.Model.User GetUser(int userId, FieldRequest requestArg)
         {
             string endpoint = string.Format("users/{0}.json", userId);
 
-            return Get<SingleItem<User>>(endpoint, requestArg).Item;
+            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
         }
 
-        public User GetMe(FieldRequest requestArg)
+        public HelpScoutNet.Model.User GetMe(FieldRequest requestArg)
         {
             string endpoint = "users/me.json";
 
-            return Get<SingleItem<User>>(endpoint, requestArg).Item;
+            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
         }
 
-        public Paged<User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
+        public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/users.json",mailboxId);
 
-            return Get<Paged<User>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
         #endregion
@@ -279,10 +280,10 @@ namespace HelpScoutNet
 
         #region Reports
 
-        public UserReport GetUserOverallReport(ReportCompareRequest requestArg = null )
+        public UserReport GetUserOverallReport(ReportUserCompareRequest requestArg)
         {
             string endpoint = string.Format("reports/user.json");
-            return Get<SingleItem<UserReport>>(endpoint, requestArg).Item;
+            return Get<UserReport>(endpoint, requestArg);
         }
 
         #endregion

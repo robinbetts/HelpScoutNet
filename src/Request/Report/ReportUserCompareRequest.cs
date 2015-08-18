@@ -5,14 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Class for general 
-
 namespace HelpScoutNet.Request.Report
 {
-    public class ReportCompareRequest : FieldRequest
+    public class ReportUserCompareRequest : FieldRequest
     {
+        public ReportUserCompareRequest(int userID, DateTime? startTime, DateTime? endTime)
+        {
+            Start = startTime;
+            End = endTime;
+            User = userID;
+        }
+
+
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
+        public int User { get; set; }
 
         /// <summary>
         /// Previous Start Time To Compare To
@@ -43,8 +50,6 @@ namespace HelpScoutNet.Request.Report
         /// List of folder identifiers to filter by
         /// </summary>
         public IList<int> Folders { get; set; }
-
-        public int User { get; set; }
 
         public override NameValueCollection ToNameValueCollection()
         {

@@ -86,6 +86,7 @@
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
     <Compile Include="Request\Report\ReportCompareRequest.cs" />
+    <Compile Include="Request\Report\ReportUserRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>
