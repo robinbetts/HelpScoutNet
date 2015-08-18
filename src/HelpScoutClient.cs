@@ -297,10 +297,10 @@ namespace HelpScoutNet
             return Get<Model.Report.Common.CustomersDatesAndAcounts>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.DatesAndCounts GetUserReplies(Request.Report.User.UserRepliesRequest requestArg)
+        public Model.Report.Common.RepliesDateAndCount GetUserReplies(Request.Report.User.UserRepliesRequest requestArg)
         {
             string endpoint = string.Format("reports/user/replies.json");
-            return Get<Model.Report.Common.DatesAndCounts>(endpoint, requestArg);
+            return Get<Model.Report.Common.RepliesDateAndCount>(endpoint, requestArg);
         }
 
         #endregion
@@ -311,9 +311,7 @@ namespace HelpScoutNet
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
-
-            string test = BaseUrl + endpoint + ToQueryString(request);
-            
+           
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
 
