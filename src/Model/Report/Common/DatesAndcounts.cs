@@ -11,4 +11,10 @@ namespace HelpScoutNet.Model.Report.Common
         public List<DateAndCount> Current { get; set; }
         public List<DateAndCount> Previous { get; set; }
     }
+
+    public class CustomersDatesAndAcounts
+    {
+        public List<CustomerDateAndCount> Current { get; set; }
+        public List<CustomerDateAndCount> Previous { get; set; }
+    }
 }

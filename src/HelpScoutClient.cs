@@ -291,6 +291,18 @@ namespace HelpScoutNet
             return Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
         }
 
+        public Model.Report.Common.CustomersDatesAndAcounts GetUserCustomersHelped(Request.Report.User.UserCustomersHelpedRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/customers-helped.json");
+            return Get<Model.Report.Common.CustomersDatesAndAcounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.Common.DatesAndCounts GetUserReplies(Request.Report.User.UserRepliesRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/replies.json");
+            return Get<Model.Report.Common.DatesAndCounts>(endpoint, requestArg);
+        }
+
         #endregion
 
 

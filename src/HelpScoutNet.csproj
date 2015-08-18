@@ -87,7 +87,9 @@
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
     <Compile Include="Request\Report\User\UserConversationHistoryRequest.cs" />
+    <Compile Include="Request\Report\User\UserCustomersHelpedRequest.cs" />
     <Compile Include="Request\Report\User\UserOverallRequest.cs" />
+    <Compile Include="Request\Report\User\UserRepliesRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>

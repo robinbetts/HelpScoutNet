@@ -22,7 +22,7 @@ namespace HelpScoutNet.Request
                 Nv.Add("lastName", LastName);
             if (!string.IsNullOrEmpty(Email))
                 Nv.Add("email", Email);
-            if (!ModifiedSince.HasValue)
+            if (ModifiedSince.HasValue)
                 Nv.Add("modifiedSince", ModifiedSince.Value.ToIso8601());
             
             return Nv;

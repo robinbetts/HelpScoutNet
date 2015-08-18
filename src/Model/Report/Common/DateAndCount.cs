@@ -10,5 +10,12 @@ namespace HelpScoutNet.Model.Report.Common
     {
         public DateTime? Date { get; set; }
         public int Count { get; set; }
+        public int Replies { get; set; }
+    }
+
+    public class CustomerDateAndCount
+    {
+        public DateTime? Date { get; set; }
+        public int Customers { get; set; }
     }
 }

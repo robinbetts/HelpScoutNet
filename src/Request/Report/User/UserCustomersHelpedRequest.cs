@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Request.Report.User
 {
-    public class UserConversationHistoryRequest : PageRequest
+    public class UserCustomersHelpedRequest : FieldRequest
     {
-        public UserConversationHistoryRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserCustomersHelpedRequest(int userID, DateTime? startTime, DateTime? endTime)
         {
             Start = startTime;
             End = endTime;
@@ -50,6 +50,11 @@ namespace HelpScoutNet.Request.Report.User
         /// </summary>
         public IList<int> Folders { get; set; }
 
+        /// <summary>
+        /// Represents the resolution at which the data is returned
+        /// </summary>
+        public DataResolution? ViewBy { get; set; }
+
         public override NameValueCollection ToNameValueCollection()
         {
             base.ToNameValueCollection();
@@ -69,10 +74,19 @@ namespace HelpScoutNet.Request.Report.User
                 Nv.Add("folders", string.Join(",", Types));
             if (Folders != null && Folders.Any())
                 Nv.Add("types", string.Join(",", Folders));
+            if (ViewBy.HasValue)
+                Nv.Add("viewBy", ((DataResolution)ViewBy).ToString().FirstCharacterToLower());
             if (User >= 0)
                 Nv.Add("user", User.ToString());
             return Nv;
         }
 
+
+        public enum DataResolution
+        {
+            day,
+            week,
+            month
+        }
     }
 }
