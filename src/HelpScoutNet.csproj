@@ -64,6 +64,7 @@
     <Compile Include="Model\Report\Conversations\DayStats.cs" />
     <Compile Include="Model\Report\Docs\DocsReport.cs" />
     <Compile Include="Model\Report\Happiness\HappinessReport.cs" />
+    <Compile Include="Model\Report\PagedReport.cs" />
     <Compile Include="Model\Report\Productivity\ProductivityReport.cs" />
     <Compile Include="Model\Report\Team\TeamReport.cs" />
     <Compile Include="Model\Report\User\ConversationStats.cs" />
@@ -85,8 +86,8 @@
     <Compile Include="Request\PostOrPutRequest.cs" />
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
-    <Compile Include="Request\Report\ReportCompareRequest.cs" />
-    <Compile Include="Request\Report\ReportUserRequest.cs" />
+    <Compile Include="Request\Report\User\UserConversationHistoryRequest.cs" />
+    <Compile Include="Request\Report\User\UserOverallRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>

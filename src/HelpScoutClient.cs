@@ -6,13 +6,12 @@ using System.Net.Http.Headers;
 using System.Runtime.Remoting;
 using System.Text;
 using HelpScoutNet.Model;
+using HelpScoutNet.Model.Report;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using HelpScoutNet.Model.Report.User;
 using HelpScoutNet.Request.Report;
-using HelpScoutNet.Model.Report.User.UserReports;
 
 
 namespace HelpScoutNet
@@ -280,10 +279,16 @@ namespace HelpScoutNet
 
         #region Reports
 
-        public UserReport GetUserOverallReport(ReportUserCompareRequest requestArg)
+        public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserOverallRequest requestArg)
         {
             string endpoint = string.Format("reports/user.json");
-            return Get<UserReport>(endpoint, requestArg);
+            return Get<Model.Report.User.UserReports.UserReport>(endpoint, requestArg);
+        }
+
+        public Model.Report.PagedReport<Model.Report.User.ConversationStats> GetUserConversationHistory(Request.Report.User.UserConversationHistoryRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/conversation-history.json");
+            return Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
         }
 
         #endregion

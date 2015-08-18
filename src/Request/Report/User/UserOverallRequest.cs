@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelpScoutNet.Request.Report
+namespace HelpScoutNet.Request.Report.User
 {
-    public class ReportUserCompareRequest : FieldRequest
+    public class UserOverallRequest : FieldRequest
     {
-        public ReportUserCompareRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserOverallRequest(int userID, DateTime? startTime, DateTime? endTime)
         {
             Start = startTime;
             End = endTime;
