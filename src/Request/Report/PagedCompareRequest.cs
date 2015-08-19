@@ -9,6 +9,9 @@ namespace HelpScoutNet.Request.Report
 {
     public class PagedCompareRequest : CompareRequest
     {
+        public PagedCompareRequest(DateTime? startTime, DateTime? endTime)
+            : base(startTime, endTime) { }
+
         public int? Page { get; set; }
 
         public override NameValueCollection ToNameValueCollection()

@@ -6,24 +6,29 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Model.Report.Common
 {
-    public class Date
+    public class DateBase
     {
-        public DateTime? Date{get; set;}
+        public DateTime? Date {get; set;}
     }
 
-    public class DateAndCount : Date
+    public class DateAndCount : DateBase
     {
+
         public int Count { get; set; }
-        public int Replies { get; set; }
     }
 
-    public class CustomerDateAndCount : Date
+    public class CustomerDateAndCount : DateBase
     {
         public int Customers { get; set; }
     }
 
-    public class RepliesDateAndCount : Date
+    public class RepliesDateAndCount : DateBase
     {
         public int Replies { get; set; }
+    }
+
+    public class ResolvedDateAndCount : DateBase
+    {
+        public int Resolved { get; set; }
     }
 }

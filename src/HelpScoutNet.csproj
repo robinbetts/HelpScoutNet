@@ -86,10 +86,13 @@
     <Compile Include="Request\PostOrPutRequest.cs" />
     <Compile Include="Request\IRequest.cs" />
     <Compile Include="Request\PageRequest.cs" />
-    <Compile Include="Request\Report\User\UserConversationHistoryRequest.cs" />
-    <Compile Include="Request\Report\User\UserCustomersHelpedRequest.cs" />
-    <Compile Include="Request\Report\User\UserOverallRequest.cs" />
-    <Compile Include="Request\Report\User\UserRepliesRequest.cs" />
+    <Compile Include="Request\Report\CompareRequest.cs" />
+    <Compile Include="Request\Report\PagedCompareRequest.cs" />
+    <Compile Include="Request\Report\ReportRequest.cs" />
+    <Compile Include="Request\Report\User\UserPagedRequest.cs" />
+    <Compile Include="Request\Report\User\UserRatingsRequest.cs" />
+    <Compile Include="Request\Report\User\UserViewByRequest.cs" />
+    <Compile Include="Request\Report\User\UserRequest.cs" />
     <Compile Include="Request\SearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>

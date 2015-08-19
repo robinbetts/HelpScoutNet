@@ -9,6 +9,9 @@ namespace HelpScoutNet.Request.Report
 {
     public class CompareRequest : ReportRequest
     {
+        public CompareRequest(DateTime? startTime, DateTime? endTime)
+            : base(startTime, endTime) { }
+
         /// <summary>
         /// Previous Start Time To Compare To
         /// </summary>
@@ -19,8 +22,9 @@ namespace HelpScoutNet.Request.Report
         /// </summary>
         public DateTime? PreviousEnd { get; set; }
 
-        public virtual NameValueCollection ToNameValueCollection()
+        public override NameValueCollection ToNameValueCollection()
         {
+            base.ToNameValueCollection();
             if (PreviousStart.HasValue)
                 Nv.Add("start", PreviousStart.Value.ToIso8601());
             if (PreviousEnd.HasValue)

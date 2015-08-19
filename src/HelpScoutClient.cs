@@ -279,28 +279,46 @@ namespace HelpScoutNet
 
         #region Reports
 
-        public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserOverallRequest requestArg)
+        public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserRequest requestArg)
         {
             string endpoint = string.Format("reports/user.json");
             return Get<Model.Report.User.UserReports.UserReport>(endpoint, requestArg);
         }
 
-        public Model.Report.PagedReport<Model.Report.User.ConversationStats> GetUserConversationHistory(Request.Report.User.UserConversationHistoryRequest requestArg)
+        public Model.Report.PagedReport<Model.Report.User.ConversationStats> GetUserConversationHistory(Request.Report.User.UserPagedRequest requestArg)
         {
             string endpoint = string.Format("reports/user/conversation-history.json");
             return Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.CustomersDatesAndAcounts GetUserCustomersHelped(Request.Report.User.UserCustomersHelpedRequest requestArg)
+        public Model.Report.Common.CustomersDatesAndCounts GetUserCustomersHelped(Request.Report.User.UserViewByRequest requestArg)
         {
             string endpoint = string.Format("reports/user/customers-helped.json");
-            return Get<Model.Report.Common.CustomersDatesAndAcounts>(endpoint, requestArg);
+            return Get<Model.Report.Common.CustomersDatesAndCounts>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.RepliesDateAndCount GetUserReplies(Request.Report.User.UserRepliesRequest requestArg)
+        public Model.Report.Common.RepliesDatesAndCounts GetUserReplies(Request.Report.User.UserViewByRequest requestArg)
         {
             string endpoint = string.Format("reports/user/replies.json");
-            return Get<Model.Report.Common.RepliesDateAndCount>(endpoint, requestArg);
+            return Get<Model.Report.Common.RepliesDatesAndCounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.Common.ResolvedDatesAndCounts GetUserResolved(Request.Report.User.UserViewByRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/resolutions.json");
+            return Get<Model.Report.Common.ResolvedDatesAndCounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.User.UserHappiness GetUserHappiness(Request.Report.User.UserRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/happiness.json");
+            return Get<Model.Report.User.UserHappiness>(endpoint, requestArg);
+        }
+
+        public Model.Report.PagedReport<Model.Report.Common.Rating> GetUserRatings(Request.Report.User.UserRatingsRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/ratings.json");
+            return Get<PagedReport<Model.Report.Common.Rating>>(endpoint, requestArg);
         }
 
         #endregion
@@ -311,6 +329,8 @@ namespace HelpScoutNet
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
+
+            string test = BaseUrl + endpoint + ToQueryString(request);
            
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;

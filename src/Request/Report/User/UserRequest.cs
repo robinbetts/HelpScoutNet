@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Request.Report.User
 {
-    public class UserConversationHistoryRequest : PagedCompareRequest
+    public class UserRequest : CompareRequest
     {
-        public UserConversationHistoryRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserRequest(int userID, DateTime? startTime, DateTime? endTime)
+            : base(startTime, endTime)
         {
-            Start = startTime;
-            End = endTime;
             User = userID;
         }
 
-        public int User { get; set; }
 
-        /// <summary>
-        /// List of folder identifiers to filter by
-        /// </summary>
-        public IList<int> Folders { get; set; }
+        public int User { get; set; }
 
         public override NameValueCollection ToNameValueCollection()
         {
@@ -32,6 +27,5 @@ namespace HelpScoutNet.Request.Report.User
                 Nv.Add("user", User.ToString());
             return Nv;
         }
-
     }
 }

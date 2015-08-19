@@ -7,21 +7,13 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Request.Report.User
 {
-    public class UserRepliesRequest : CompareRequest
+    public class UserViewByRequest : UserRequest
     {
-        public UserRepliesRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserViewByRequest(int userID, DateTime? startTime, DateTime? endTime, DataResolution? viewBy = null)
+            : base(userID, startTime, endTime)
         {
-            Start = startTime;
-            End = endTime;
-            User = userID;
+            ViewBy = viewBy;
         }
-
-        public int User { get; set; }
-
-        /// <summary>
-        /// List of folder identifiers to filter by
-        /// </summary>
-        public IList<int> Folders { get; set; }
 
         /// <summary>
         /// Represents the resolution at which the data is returned
@@ -31,12 +23,8 @@ namespace HelpScoutNet.Request.Report.User
         public override NameValueCollection ToNameValueCollection()
         {
             base.ToNameValueCollection();
-            if (Folders != null && Folders.Any())
-                Nv.Add("types", string.Join(",", Folders));
             if (ViewBy.HasValue)
                 Nv.Add("viewBy", ((DataResolution)ViewBy).ToString().FirstCharacterToLower());
-            if (User >= 0)
-                Nv.Add("user", User.ToString());
             return Nv;
         }
 
