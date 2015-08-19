@@ -329,8 +329,6 @@ namespace HelpScoutNet
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
-
-            string test = BaseUrl + endpoint + ToQueryString(request);
            
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
