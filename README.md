@@ -37,6 +37,26 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
     * List Users ny Mailbox
 * Workflows
     * List Workflows
+* Reports
+   * Busy Time Statistics
+   * Customer Statistics
+   * Handle Time Statistics
+   * Multiple Time Range Statistics (Conversations)
+   * Multiple Time Range Statistics (Productivity)
+   * Multiple Time Range Statistics (Team)
+   * Multiple Time Range Statistics (User)
+   * New Conversation Statistics
+   * Replies to Resolve Statistics
+   * Response Time Statistics
+   * Saved Reply Statistics
+   * Tag Statistics
+   * Time Range Statistics (Conversations)
+   * Time Range Statistics (Productivity)
+   * Time Range Statistics (Team)
+   * Time Range Statistics (User)
+   * User Statistics (Team)
+   * Workflow Statistics
+
 
 ###Docs API
 
