@@ -6,10 +6,12 @@ using System.Net.Http.Headers;
 using System.Runtime.Remoting;
 using System.Text;
 using HelpScoutNet.Model;
+using HelpScoutNet.Model.Report;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using HelpScoutNet.Request.Report;
 
 
 namespace HelpScoutNet
@@ -223,43 +225,43 @@ namespace HelpScoutNet
 
         #region Tag
 
-        public Paged<Tag> ListTags(PageRequest requestArg = null)
+        public Paged<HelpScoutNet.Model.Tag> ListTags(PageRequest requestArg = null)
         {
             string endpoint = "tags.json";
 
-            return Get<Paged<Tag>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.Tag>>(endpoint, requestArg);
         }
 
         #endregion
 
         #region Users
 
-        public Paged<User> ListUsers(PageRequest requestArg = null)
+        public Paged<HelpScoutNet.Model.User> ListUsers(PageRequest requestArg = null)
         {
             string endpoint = "users.json";
 
-            return Get<Paged<User>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public User GetUser(int userId, FieldRequest requestArg)
+        public HelpScoutNet.Model.User GetUser(int userId, FieldRequest requestArg)
         {
             string endpoint = string.Format("users/{0}.json", userId);
 
-            return Get<SingleItem<User>>(endpoint, requestArg).Item;
+            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
         }
 
-        public User GetMe(FieldRequest requestArg)
+        public HelpScoutNet.Model.User GetMe(FieldRequest requestArg)
         {
             string endpoint = "users/me.json";
 
-            return Get<SingleItem<User>>(endpoint, requestArg).Item;
+            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
         }
 
-        public Paged<User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
+        public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/users.json",mailboxId);
 
-            return Get<Paged<User>>(endpoint, requestArg);
+            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
         #endregion
@@ -275,12 +277,59 @@ namespace HelpScoutNet
         
         #endregion
 
-       
+        #region Reports
+
+        public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user.json");
+            return Get<Model.Report.User.UserReports.UserReport>(endpoint, requestArg);
+        }
+
+        public Model.Report.PagedReport<Model.Report.User.ConversationStats> GetUserConversationHistory(Request.Report.User.UserPagedRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/conversation-history.json");
+            return Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
+        }
+
+        public Model.Report.Common.CustomersDatesAndCounts GetUserCustomersHelped(Request.Report.User.UserViewByRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/customers-helped.json");
+            return Get<Model.Report.Common.CustomersDatesAndCounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.Common.RepliesDatesAndCounts GetUserReplies(Request.Report.User.UserViewByRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/replies.json");
+            return Get<Model.Report.Common.RepliesDatesAndCounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.Common.ResolvedDatesAndCounts GetUserResolved(Request.Report.User.UserViewByRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/resolutions.json");
+            return Get<Model.Report.Common.ResolvedDatesAndCounts>(endpoint, requestArg);
+        }
+
+        public Model.Report.User.UserHappiness GetUserHappiness(Request.Report.User.UserRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/happiness.json");
+            return Get<Model.Report.User.UserHappiness>(endpoint, requestArg);
+        }
+
+        public Model.Report.PagedReport<Model.Report.Common.Rating> GetUserRatings(Request.Report.User.UserRatingsRequest requestArg)
+        {
+            string endpoint = string.Format("reports/user/ratings.json");
+            return Get<PagedReport<Model.Report.Common.Rating>>(endpoint, requestArg);
+        }
+
+        #endregion
+
+
+
 
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
-            
+           
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
 
