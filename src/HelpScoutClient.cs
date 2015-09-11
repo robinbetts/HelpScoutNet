@@ -279,6 +279,7 @@ namespace HelpScoutNet
 
         #region Reports
 
+        #region Users
         public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserRequest requestArg)
         {
             string endpoint = string.Format("reports/user.json");
@@ -321,6 +322,117 @@ namespace HelpScoutNet
             return Get<PagedReport<Model.Report.Common.Rating>>(endpoint, requestArg);
         }
 
+        private void GetUserDrillDown()
+        {
+            //Not Implimented
+        }
+
+        #endregion
+
+        #region Conversations
+
+        public Model.Report.Conversations.ConversationsReport GetConversationsOverall(Request.Report.CompareRequest requestArg)
+        {
+            string endpoint = string.Format("reports/conversations.json");
+            return Get<Model.Report.Conversations.ConversationsReport>(endpoint, requestArg);
+        }
+
+        private void GetNewConversations()
+        {
+            //Not Implimented
+        }
+
+        private void GetConversationsDrillDown()
+        {
+            //Not Implimented
+        }
+
+        private void GetConversationsDrillDownByField()
+        {
+            // not Implimented
+        }
+
+        private void GetNewConversationsDrillDown()
+        {
+            // not Implimented
+        }
+
+        #endregion
+
+        #region Team
+
+        public Model.Report.Team.TeamReport GetTeamOverall(Request.Report.CompareRequest requestArg)
+        {
+            string endpoint = string.Format("reports/team.json");
+            return Get<Model.Report.Team.TeamReport>(endpoint, requestArg);
+        }
+
+        private void GetTeamCustomersHelped()
+        {
+            //Not Implimented
+        }
+
+        private void GetTeamDrillDown()
+        {
+            //Not Implimented
+        }
+
+        #endregion
+
+        #region Happiness
+
+        private void GetHappinessOverall()
+        {
+            //Not Implimented
+        }
+
+        private void GetHappinessRatings()
+        {
+            //Not Implimented
+        }
+
+        #endregion
+
+        #region Productivity
+
+        private void GetProductivityOverall()
+        {
+            //Not Implimented
+        }
+
+        private void GetProductivityFirstResponseTime()
+        {
+            //Not Implimented
+        }
+
+
+        private void GetProductivityRepliesSent()
+        {
+            //Not Implimented
+        }
+
+        private void GetProductivityResolved()
+        {
+            //Not Implimented
+        }
+
+        private void GetProductivityResolutionTime()
+        {
+            //Not Implimented
+        }
+
+        private void GetProductivityResponseTime()
+        {
+            //Not Implimented
+        }
+
+        private void GetProductivityDrillDown()
+        {
+            //Not Implimented
+        }
+
+        #endregion
+
         #endregion
 
 
@@ -329,6 +441,8 @@ namespace HelpScoutNet
         private T Get<T>(string endpoint, IRequest request) where T : class
         {
             var client = InitHttpClient();
+
+            string debug = BaseUrl + endpoint + ToQueryString(request);
            
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
