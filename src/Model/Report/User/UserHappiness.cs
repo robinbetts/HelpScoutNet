@@ -18,7 +18,7 @@ namespace HelpScoutNet.Model.Report.User
             public double Great { get; set; }
             public double Okay { get; set; }
             public double NotGood { get; set; }
-            public double GreatCount { get; set; }
+            public int GreatCount { get; set; }
             public int OkayCount { get; set; }
             public int NotGoodCount { get; set; }
             public int TotalCustomers { get; set; }
