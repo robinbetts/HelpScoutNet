@@ -386,9 +386,10 @@ namespace HelpScoutNet
             //Not Implimented
         }
 
-        private void GetHappinessRatings()
+        private Paged<Model.Report.Common.Rating> GetHappinessRatings(Request.Report.PagedRatingsRequest requestArg)
         {
-            //Not Implimented
+            string endpoint = string.Format("reports/happiness/ratings.json");
+            return Get<Paged<Model.Report.Common.Rating>>(endpoint, requestArg);
         }
 
         #endregion
