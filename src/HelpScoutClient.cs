@@ -381,10 +381,12 @@ namespace HelpScoutNet
 
         #region Happiness
 
-        private void GetHappinessOverall()
-        {
-            //Not Implimented
-        }
+        //Not implimented yet, it requires a user compare request which makes no sense for an overall report.
+        //private Model.Report.Happiness.HappinessReport GetHappinessOverall()
+        //{
+
+        //    string endpoint = string.Format("reports/happiness.json");
+        //}
 
         private Paged<Model.Report.Common.Rating> GetHappinessRatings(Request.Report.PagedRatingsRequest requestArg)
         {

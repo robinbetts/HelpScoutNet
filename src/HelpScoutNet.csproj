@@ -89,6 +89,7 @@
     <Compile Include="Request\PageRequest.cs" />
     <Compile Include="Request\Report\CompareRequest.cs" />
     <Compile Include="Request\Report\PagedCompareRequest.cs" />
+    <Compile Include="Request\Report\PagedRatingsRequest.cs" />
     <Compile Include="Request\Report\ReportRequest.cs" />
     <Compile Include="Request\Report\User\UserPagedRequest.cs" />
     <Compile Include="Request\Report\User\UserRatingsRequest.cs" />
