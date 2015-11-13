@@ -12,7 +12,7 @@ namespace HelpScoutNet.Request.Report
         public PagedRatingsRequest(DateTime? startTime, DateTime? endTime, int rating)
                 : base(startTime, endTime)
         {
-
+            Rating = rating;
         }
 
         public int? Rating { get; set; }

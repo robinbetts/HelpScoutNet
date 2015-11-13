@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using HelpScoutNet.Request.Report;
-
+using System.Threading.Tasks;
 
 namespace HelpScoutNet
 {
@@ -20,6 +20,7 @@ namespace HelpScoutNet
     {
         private readonly string _apiKey;
         private const string BaseUrl = "https://api.helpscout.net/v1/";
+        private int timeoutSeconds = 0;
 
         private JsonSerializerSettings _serializerSettings
         {
@@ -41,6 +42,12 @@ namespace HelpScoutNet
         public HelpScoutClient(string apiKey)
         {
             _apiKey = apiKey;
+        }
+
+        public HelpScoutClient(string apiKey, int timeoutSeconds)
+        {
+            _apiKey = apiKey;
+            this. timeoutSeconds = timeoutSeconds;
         }
 
         #region Mailboxes
@@ -381,12 +388,11 @@ namespace HelpScoutNet
 
         #region Happiness
 
-        //Not implimented yet, it requires a user compare request which makes no sense for an overall report.
-        //private Model.Report.Happiness.HappinessReport GetHappinessOverall()
-        //{
-
-        //    string endpoint = string.Format("reports/happiness.json");
-        //}
+        private Model.Report.Happiness.HappinessReport GetHappinessOverall(Request.Report.CompareRequest requestArg)
+        {
+            string endpoint = string.Format("reports/happiness.json");
+            return Get<Model.Report.Happiness.HappinessReport>(endpoint, requestArg);
+        }
 
         private Paged<Model.Report.Common.Rating> GetHappinessRatings(Request.Report.PagedRatingsRequest requestArg)
         {
@@ -446,7 +452,7 @@ namespace HelpScoutNet
             var client = InitHttpClient();
 
             string debug = BaseUrl + endpoint + ToQueryString(request);
-           
+
             HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
             string body = response.Content.ReadAsStringAsync().Result;
 
@@ -458,7 +464,7 @@ namespace HelpScoutNet
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error, body);                                                                 
+            throw new HelpScoutApiException(error, body);
         }
 
         private string PostAttachment(string endpoint, CreateAttachmentRequest request)
@@ -556,6 +562,8 @@ namespace HelpScoutNet
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", _apiKey, "X"))));
+            if (timeoutSeconds != 0)
+                client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
             return client;
         }
 
