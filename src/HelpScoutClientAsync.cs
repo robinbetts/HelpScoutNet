@@ -444,112 +444,118 @@ namespace HelpScoutNet
         #endregion
 
 
-        private T Get<T>(string endpoint, IRequest request) where T : class
+        private async Task<T> Get<T>(string endpoint, IRequest request) where T : class
         {
-            var client = InitHttpClient();
-
             string debug = BaseUrl + endpoint + ToQueryString(request);
-            HttpResponseMessage response = client.GetAsync(BaseUrl + endpoint + ToQueryString(request)).Result;
-            string body = response.Content.ReadAsStringAsync().Result;
 
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = InitHttpClient())
             {
-                T result = JsonConvert.DeserializeObject<T>(body, _serializerSettings);
+                HttpResponseMessage response = await client.GetAsync(BaseUrl + endpoint + ToQueryString(request));
+                string body = await response.Content.ReadAsStringAsync();
 
-                return result;
-            }
-
-            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error, body);
-        }
-
-        private string PostAttachment(string endpoint, CreateAttachmentRequest request)
-        {
-            var client = InitHttpClient();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var jsonPayload = JsonConvert.SerializeObject(request, _serializerSettings);
-
-            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
-            string body = response.Content.ReadAsStringAsync().Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                dynamic file = JsonConvert.DeserializeObject(body);
-
-                return file.item.hash;
-            }
-
-            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error, body);
-        }
-
-        private T Post<T>(string endpoint, T payload, IPostOrPutRequest request)
-        {
-            var client = InitHttpClient();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
-
-            HttpResponseMessage response = client.PostAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
-            string body = response.Content.ReadAsStringAsync().Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                if (request.Reload)
+                if (response.IsSuccessStatusCode)
                 {
-                    T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
+                    T result = JsonConvert.DeserializeObject<T>(body, _serializerSettings);
+
                     return result;
                 }
-                else
-                {
-                    return payload;
-                }
-            }
 
-            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error, body);
+                var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+                throw new HelpScoutApiException(error, body);
+            }
+        }
+
+        private async Task<string> PostAttachment(string endpoint, CreateAttachmentRequest request)
+        {
+            using (HttpClient client = InitHttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var jsonPayload = JsonConvert.SerializeObject(request, _serializerSettings);
+
+                HttpResponseMessage response = await client.PostAsync(BaseUrl + endpoint, new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+                string body = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic file = JsonConvert.DeserializeObject(body);
+
+                    return file.item.hash;
+                }
+
+                var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+                throw new HelpScoutApiException(error, body);
+            }
+        }
+
+        private async Task<T> Post<T>(string endpoint, T payload, IPostOrPutRequest request)
+        {
+            using (HttpClient client = InitHttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
+
+                HttpResponseMessage response = await client.PostAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+                string body = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (request.Reload)
+                    {
+                        T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
+                        return result;
+                    }
+                    else
+                    {
+                        return payload;
+                    }
+                }
+
+                var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+                throw new HelpScoutApiException(error, body);
+            }  
         }
 
         private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
-            var client = InitHttpClient();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
-
-            HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
-            string body = response.Content.ReadAsStringAsync().Result;
-
-            if (response.IsSuccessStatusCode)
+            using (HttpClient client = InitHttpClient())
             {
-                if (request.Reload)
-                {
-                    T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
-                    return result;
-                }
-                else
-                {
-                    return payload;
-                }
-            }
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
 
-            var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
-            throw new HelpScoutApiException(error, body);
-        }
-
-        private void Delete(string endpoint)
-        {
-            var client = InitHttpClient();
-
-            var response = client.DeleteAsync(BaseUrl + endpoint).Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
+                HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
                 string body = response.Content.ReadAsStringAsync().Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (request.Reload)
+                    {
+                        T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
+                        return result;
+                    }
+                    else
+                    {
+                        return payload;
+                    }
+                }
+
                 var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
                 throw new HelpScoutApiException(error, body);
+            }
+        }
+
+        private async void Delete(string endpoint)
+        {
+            using (HttpClient client = InitHttpClient())
+            {
+                HttpResponseMessage response = await client.DeleteAsync(BaseUrl + endpoint);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string body = await response.Content.ReadAsStringAsync();
+                    var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
+                    throw new HelpScoutApiException(error, body);
+                }
             }
         }
 
@@ -581,9 +587,4 @@ namespace HelpScoutNet
             return "?" + string.Join("&", array);
         }
     }
-
-    //internal class SingleItem<T>
-    //{
-    //    public T Item { get; set; }
-    //}
 }
