@@ -13,6 +13,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+//.NET 4.5+ only
+
 namespace HelpScoutNet
 {
     public sealed class HelpScoutClientAsync
@@ -50,76 +52,75 @@ namespace HelpScoutNet
         }
 
         #region Mailboxes
-        public Paged<Mailbox> ListMailboxes(PageRequest requestArg = null)
+        public async Task<Paged<Mailbox>> ListMailboxes(PageRequest requestArg = null)
         {
-            return Get<Paged<Mailbox>>("mailboxes.json", requestArg);
+            return await Get<Paged<Mailbox>>("mailboxes.json", requestArg);
         }
 
-        public Mailbox GetMailbox(int mailboxId, FieldRequest requestArg = null)
+        public async Task<SingleItem<Mailbox>> GetMailbox(int mailboxId, FieldRequest requestArg = null)
         {
-            var singleItem = Get<SingleItem<Mailbox>>(string.Format("mailboxes/{0}.json", mailboxId), requestArg);
+            var singleItem = await Get<SingleItem<Mailbox>>(string.Format("mailboxes/{0}.json", mailboxId), requestArg);
 
-            return singleItem.Item;
+            return singleItem;
         }
 
-        public Paged<Folder> GetFolder(int folderId, PageRequest requestArg = null)
+        public async Task<Paged<Folder>> GetFolder(int folderId, PageRequest requestArg = null)
         {
-            return Get<Paged<Folder>>(string.Format("/mailboxes/{0}/folders.json", folderId), requestArg);
+            return await Get<Paged<Folder>>(string.Format("/mailboxes/{0}/folders.json", folderId), requestArg);
         }
         #endregion
 
         #region Conversations
 
-        public Paged<Conversation> ListConversations(int mailboxId, ConversationRequest requestArg = null)
+        public async Task<Paged<Conversation>> ListConversations(int mailboxId, ConversationRequest requestArg = null)
         {
-
             string endpoint = string.Format("mailboxes/{0}/conversations.json", mailboxId);
 
-            return Get<Paged<Conversation>>(endpoint, requestArg);
+            return await Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsInFolder(int mailboxId, int folderId, ConversationRequest requestArg = null)
+        public async Task<Paged<Conversation>> ListConversationsInFolder(int mailboxId, int folderId, ConversationRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/folders/{1}/conversations.json", mailboxId, folderId);
 
-            return Get<Paged<Conversation>>(endpoint, requestArg);
+            return await Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
+        public async Task<Paged<Conversation>> ListConversationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, customerId);
 
-            return Get<Paged<Conversation>>(endpoint, requestArg);
+            return await Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsForUser(int mailboxId, int userId, FieldRequest requestArg = null)
+        public async Task<Paged<Conversation>> ListConversationsForUser(int mailboxId, int userId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, userId);
-            return Get<Paged<Conversation>>(endpoint, requestArg);
+            return await Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Conversation GetConversation(int conversationId, FieldRequest requestArg = null)
+        public async Task<SingleItem<Conversation>> GetConversation(int conversationId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("conversations/{0}.json", conversationId);
-            return Get<SingleItem<Conversation>>(endpoint, requestArg).Item;
+            return await Get<SingleItem<Conversation>>(endpoint, requestArg);
         }
 
-        public Attachment GetAttachement(int conversationId, FieldRequest requestArg = null)
+        public async Task<SingleItem<Attachment>> GetAttachement(int conversationId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("attachments/{0}/data.json", conversationId);
-            return Get<SingleItem<Attachment>>(endpoint, requestArg).Item;
+            return await Get<SingleItem<Attachment>>(endpoint, requestArg);
         }
 
-        public Conversation CreateConversation(Conversation conversation, bool imported = false, bool autoReply = false, bool reload = true)
+        public async Task<Conversation> CreateConversation(Conversation conversation, bool imported = false, bool autoReply = false, bool reload = true)
         {
             string endpoint = "conversations.json";
-            return Post(endpoint, conversation, new CreateCustomerRequest { AutoReply = autoReply, Reload = reload, Imported = imported });
+            return await Post(endpoint, conversation, new CreateCustomerRequest { AutoReply = autoReply, Reload = reload, Imported = imported });
         }
 
-        public Conversation UpdateConversation(Conversation conversation, bool reload = true)
+        public async Task<Conversation> UpdateConversation(Conversation conversation, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json", conversation.Id);
-            return Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
+            return await Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
         }
 
         public void DeleteConversation(int id)
@@ -136,18 +137,18 @@ namespace HelpScoutNet
             Delete(endpoint);
         }
 
-        public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
+        public async Task<Thread> CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json", conversationId);
 
-            return Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
+            return await Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
         }
 
-        public string CreateAttachment(CreateAttachmentRequest request)
+        public async Task<string> CreateAttachment(CreateAttachmentRequest request)
         {
             string endpoint = "attachments.json";
 
-            return PostAttachment(endpoint, request);
+            return await PostAttachment(endpoint, request);
         }
 
         public void DeleteAttachment(string id)
@@ -161,25 +162,25 @@ namespace HelpScoutNet
 
         #region Customers
 
-        public Paged<Customer> ListCustomers(CustomerRequest requestArg = null)
+        public async Task<Paged<Customer>> ListCustomers(CustomerRequest requestArg = null)
         {
             string endpoint = "customers.json";
 
-            return Get<Paged<Customer>>(endpoint, requestArg);
+            return await Get<Paged<Customer>>(endpoint, requestArg);
         }
 
-        public Paged<Customer> ListCustomers(int mailboxId, CustomerRequest requestArg = null)
+        public async Task<Paged<Customer>> ListCustomers(int mailboxId, CustomerRequest requestArg = null)
         {
             string endpoint = string.Format("mailbox/{0}/customers.json", mailboxId);
 
-            return Get<Paged<Customer>>(endpoint, requestArg);
+            return await Get<Paged<Customer>>(endpoint, requestArg);
         }
 
-        public Customer GetCustomer(int customerId, CustomerRequest requestArg = null)
+        public async Task<SingleItem<Customer>> GetCustomer(int customerId, CustomerRequest requestArg = null)
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
-            return Get<SingleItem<Customer>>(endpoint, requestArg).Item;
+            return await Get<SingleItem<Customer>>(endpoint, requestArg);
         }
 
         /// <summary>
@@ -188,11 +189,11 @@ namespace HelpScoutNet
         /// <param name="customer"></param>
         /// <param name="reload">if true return the new customer otherwise return the original customer</param>
         /// <returns>if reload is true return the new customer otherwise return the original customer</returns>
-        public Customer CreateCustomer(Customer customer, bool reload = true)
+        public async Task<Customer> CreateCustomer(Customer customer, bool reload = true)
         {
             string endpoint = "customers.json";
 
-            return Post(endpoint, customer, new PostOrPutRequest { Reload = reload });
+            return await Post(endpoint, customer, new PostOrPutRequest { Reload = reload });
         }
 
         /// <summary>
@@ -202,28 +203,28 @@ namespace HelpScoutNet
         /// <param name="customer">customer data to update</param>
         /// <param name="reload">if true return the new customer otherwise return the original customer</param>
         /// <returns>if reload is true return the new customer otherwise return the original customer</returns>
-        public Customer UpdateCustomer(int customerId, Customer customer, bool reload = true)
+        public async Task<Customer> UpdateCustomer(int customerId, Customer customer, bool reload = true)
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
-            return Put(endpoint, customer, new PostOrPutRequest { Reload = reload });
+            return await Put(endpoint, customer, new PostOrPutRequest { Reload = reload });
         }
         #endregion
 
         #region Search
 
-        public Paged<SearchConversation> SearchConversations(SearchRequest requestArg = null)
+        public async Task<Paged<SearchConversation>> SearchConversations(SearchRequest requestArg = null)
         {
             string endpoint = "search/conversations.json";
 
-            return Get<Paged<SearchConversation>>(endpoint, requestArg);
+            return await Get<Paged<SearchConversation>>(endpoint, requestArg);
         }
 
-        public Paged<SearchCustomer> SearchCustomers(SearchRequest requestArg = null)
+        public async Task<Paged<SearchCustomer>> SearchCustomers(SearchRequest requestArg = null)
         {
             string endpoint = "search/customers.json";
 
-            return Get<Paged<SearchCustomer>>(endpoint, requestArg);
+            return await Get<Paged<SearchCustomer>>(endpoint, requestArg);
         }
 
 
@@ -231,54 +232,54 @@ namespace HelpScoutNet
 
         #region Tag
 
-        public Paged<HelpScoutNet.Model.Tag> ListTags(PageRequest requestArg = null)
+        public async Task<Paged<HelpScoutNet.Model.Tag>> ListTags(PageRequest requestArg = null)
         {
             string endpoint = "tags.json";
 
-            return Get<Paged<HelpScoutNet.Model.Tag>>(endpoint, requestArg);
+            return await Get<Paged<HelpScoutNet.Model.Tag>>(endpoint, requestArg);
         }
 
         #endregion
 
         #region Users
 
-        public Paged<HelpScoutNet.Model.User> ListUsers(PageRequest requestArg = null)
+        public async Task<Paged<HelpScoutNet.Model.User>> ListUsers(PageRequest requestArg = null)
         {
             string endpoint = "users.json";
 
-            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
+            return await Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public HelpScoutNet.Model.User GetUser(int userId, FieldRequest requestArg)
+        public async Task<SingleItem<HelpScoutNet.Model.User>> GetUser(int userId, FieldRequest requestArg)
         {
             string endpoint = string.Format("users/{0}.json", userId);
 
-            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
+            return await Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public HelpScoutNet.Model.User GetMe(FieldRequest requestArg)
+        public async Task<SingleItem<HelpScoutNet.Model.User>> GetMe(FieldRequest requestArg)
         {
             string endpoint = "users/me.json";
 
-            return Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg).Item;
+            return await Get<SingleItem<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
+        public async Task<Paged<HelpScoutNet.Model.User>> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/users.json", mailboxId);
 
-            return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
+            return await Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
         #endregion
 
         #region Workflows
 
-        public Paged<Workflow> ListWorkflows(int mailboxId, FieldRequest requestArg)
+        public async Task<Paged<Workflow>> ListWorkflows(int mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/workflows.json", mailboxId);
 
-            return Get<Paged<Workflow>>(endpoint, requestArg);
+            return await Get<Paged<Workflow>>(endpoint, requestArg);
         }
 
         #endregion
@@ -286,46 +287,46 @@ namespace HelpScoutNet
         #region Reports
 
         #region Users
-        public Model.Report.User.UserReports.UserReport GetUserOverallReport(Request.Report.User.UserRequest requestArg)
+        public async Task<Model.Report.User.UserReports.UserReport> GetUserOverallReport(Request.Report.User.UserRequest requestArg)
         {
             string endpoint = string.Format("reports/user.json");
-            return Get<Model.Report.User.UserReports.UserReport>(endpoint, requestArg);
+            return await Get<Model.Report.User.UserReports.UserReport>(endpoint, requestArg);
         }
 
-        public Model.Report.PagedReport<Model.Report.User.ConversationStats> GetUserConversationHistory(Request.Report.User.UserPagedRequest requestArg)
+        public async Task<Model.Report.PagedReport<Model.Report.User.ConversationStats>> GetUserConversationHistory(Request.Report.User.UserPagedRequest requestArg)
         {
             string endpoint = string.Format("reports/user/conversation-history.json");
-            return Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
+            return await Get<Model.Report.PagedReport<Model.Report.User.ConversationStats>>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.CustomersDatesAndCounts GetUserCustomersHelped(Request.Report.User.UserViewByRequest requestArg)
+        public async Task<Model.Report.Common.CustomersDatesAndCounts> GetUserCustomersHelped(Request.Report.User.UserViewByRequest requestArg)
         {
             string endpoint = string.Format("reports/user/customers-helped.json");
-            return Get<Model.Report.Common.CustomersDatesAndCounts>(endpoint, requestArg);
+            return await Get<Model.Report.Common.CustomersDatesAndCounts>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.RepliesDatesAndCounts GetUserReplies(Request.Report.User.UserViewByRequest requestArg)
+        public async Task<Model.Report.Common.RepliesDatesAndCounts> GetUserReplies(Request.Report.User.UserViewByRequest requestArg)
         {
             string endpoint = string.Format("reports/user/replies.json");
-            return Get<Model.Report.Common.RepliesDatesAndCounts>(endpoint, requestArg);
+            return await Get<Model.Report.Common.RepliesDatesAndCounts>(endpoint, requestArg);
         }
 
-        public Model.Report.Common.ResolvedDatesAndCounts GetUserResolved(Request.Report.User.UserViewByRequest requestArg)
+        public async Task<Model.Report.Common.ResolvedDatesAndCounts> GetUserResolved(Request.Report.User.UserViewByRequest requestArg)
         {
             string endpoint = string.Format("reports/user/resolutions.json");
-            return Get<Model.Report.Common.ResolvedDatesAndCounts>(endpoint, requestArg);
+            return await Get<Model.Report.Common.ResolvedDatesAndCounts>(endpoint, requestArg);
         }
 
-        public Model.Report.User.UserHappiness GetUserHappiness(Request.Report.User.UserRequest requestArg)
+        public async Task<Model.Report.User.UserHappiness> GetUserHappiness(Request.Report.User.UserRequest requestArg)
         {
             string endpoint = string.Format("reports/user/happiness.json");
-            return Get<Model.Report.User.UserHappiness>(endpoint, requestArg);
+            return await Get<Model.Report.User.UserHappiness>(endpoint, requestArg);
         }
 
-        public Model.Report.PagedReport<Model.Report.Common.Rating> GetUserRatings(Request.Report.User.UserRatingsRequest requestArg)
+        public async Task<Model.Report.PagedReport<Model.Report.Common.Rating>> GetUserRatings(Request.Report.User.UserRatingsRequest requestArg)
         {
             string endpoint = string.Format("reports/user/ratings.json");
-            return Get<PagedReport<Model.Report.Common.Rating>>(endpoint, requestArg);
+            return await Get<PagedReport<Model.Report.Common.Rating>>(endpoint, requestArg);
         }
 
         private void GetUserDrillDown()
@@ -337,10 +338,10 @@ namespace HelpScoutNet
 
         #region Conversations
 
-        public Model.Report.Conversations.ConversationsReport GetConversationsOverall(Request.Report.CompareRequest requestArg)
+        public async Task<Model.Report.Conversations.ConversationsReport> GetConversationsOverall(Request.Report.CompareRequest requestArg)
         {
             string endpoint = string.Format("reports/conversations.json");
-            return Get<Model.Report.Conversations.ConversationsReport>(endpoint, requestArg);
+            return await Get<Model.Report.Conversations.ConversationsReport>(endpoint, requestArg);
         }
 
         private void GetNewConversations()
@@ -367,10 +368,10 @@ namespace HelpScoutNet
 
         #region Team
 
-        public Model.Report.Team.TeamReport GetTeamOverall(Request.Report.CompareRequest requestArg)
+        public async Task<Model.Report.Team.TeamReport> GetTeamOverall(Request.Report.CompareRequest requestArg)
         {
             string endpoint = string.Format("reports/team.json");
-            return Get<Model.Report.Team.TeamReport>(endpoint, requestArg);
+            return await Get<Model.Report.Team.TeamReport>(endpoint, requestArg);
         }
 
         private void GetTeamCustomersHelped()
@@ -387,16 +388,16 @@ namespace HelpScoutNet
 
         #region Happiness
 
-        private Model.Report.Happiness.HappinessReport GetHappinessOverall(Request.Report.CompareRequest requestArg)
+        private async Task<Model.Report.Happiness.HappinessReport> GetHappinessOverall(Request.Report.CompareRequest requestArg)
         {
             string endpoint = string.Format("reports/happiness.json");
-            return Get<Model.Report.Happiness.HappinessReport>(endpoint, requestArg);
+            return await Get<Model.Report.Happiness.HappinessReport>(endpoint, requestArg);
         }
 
-        private Paged<Model.Report.Common.Rating> GetHappinessRatings(Request.Report.PagedRatingsRequest requestArg)
+        private async Task<Paged<Model.Report.Common.Rating>> GetHappinessRatings(Request.Report.PagedRatingsRequest requestArg)
         {
             string endpoint = string.Format("reports/happiness/ratings.json");
-            return Get<Paged<Model.Report.Common.Rating>>(endpoint, requestArg);
+            return await Get<Paged<Model.Report.Common.Rating>>(endpoint, requestArg);
         }
 
         #endregion
@@ -502,7 +503,7 @@ namespace HelpScoutNet
                 {
                     if (request.Reload)
                     {
-                        T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
+                        T result = await JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
                         return result;
                     }
                     else
@@ -516,21 +517,21 @@ namespace HelpScoutNet
             }  
         }
 
-        private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
+        private async Task<T> Put<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             using (HttpClient client = InitHttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var jsonPayload = JsonConvert.SerializeObject(payload, _serializerSettings);
 
-                HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
-                string body = response.Content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = await client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json"));
+                string body = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
                     if (request.Reload)
                     {
-                        T result = JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
+                        T result = await JsonConvert.DeserializeObject<SingleItem<T>>(body).Item;
                         return result;
                     }
                     else

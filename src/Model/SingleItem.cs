@@ -8,7 +8,7 @@ namespace HelpScoutNet.Model
 {
     internal class SingleItem <T>
     {
-        public T Item { get; set; }
+        public Task<T> Item { get; set; }
 
     }
 }
