@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.Remoting;
-using System.Text;
-using HelpScoutNet.Model;
+﻿using HelpScoutNet.Model;
 using HelpScoutNet.Model.Report;
 using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using HelpScoutNet.Request.Report;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HelpScoutNet
 {
-    public sealed class HelpScoutClient
+    public sealed class HelpScoutClientAsync
     {
         private readonly string _apiKey;
         private const string BaseUrl = "https://api.helpscout.net/v1/";
@@ -31,23 +30,23 @@ namespace HelpScoutNet
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     NullValueHandling = NullValueHandling.Ignore,
                     DefaultValueHandling = DefaultValueHandling.Ignore,
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,                    
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 };
-                serializer.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+                serializer.Converters.Add(new StringEnumConverter { CamelCaseText = true });
 
                 return serializer;
             }
         }
 
-        public HelpScoutClient(string apiKey)
+        public HelpScoutClientAsync(string apiKey)
         {
             _apiKey = apiKey;
         }
 
-        public HelpScoutClient(string apiKey, int timeoutSeconds)
+        public HelpScoutClientAsync(string apiKey, int timeoutSeconds)
         {
             _apiKey = apiKey;
-            this. timeoutSeconds = timeoutSeconds;
+            this.timeoutSeconds = timeoutSeconds;
         }
 
         #region Mailboxes
@@ -55,7 +54,7 @@ namespace HelpScoutNet
         {
             return Get<Paged<Mailbox>>("mailboxes.json", requestArg);
         }
-        
+
         public Mailbox GetMailbox(int mailboxId, FieldRequest requestArg = null)
         {
             var singleItem = Get<SingleItem<Mailbox>>(string.Format("mailboxes/{0}.json", mailboxId), requestArg);
@@ -65,7 +64,7 @@ namespace HelpScoutNet
 
         public Paged<Folder> GetFolder(int folderId, PageRequest requestArg = null)
         {
-            return Get<Paged<Folder>>(string.Format("/mailboxes/{0}/folders.json", folderId), requestArg);            
+            return Get<Paged<Folder>>(string.Format("/mailboxes/{0}/folders.json", folderId), requestArg);
         }
         #endregion
 
@@ -73,7 +72,7 @@ namespace HelpScoutNet
 
         public Paged<Conversation> ListConversations(int mailboxId, ConversationRequest requestArg = null)
         {
-            
+
             string endpoint = string.Format("mailboxes/{0}/conversations.json", mailboxId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
@@ -87,7 +86,7 @@ namespace HelpScoutNet
         }
 
         public Paged<Conversation> ListConversationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
-        {            
+        {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, customerId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
@@ -114,7 +113,7 @@ namespace HelpScoutNet
         public Conversation CreateConversation(Conversation conversation, bool imported = false, bool autoReply = false, bool reload = true)
         {
             string endpoint = "conversations.json";
-            return Post(endpoint, conversation, new CreateCustomerRequest{AutoReply = autoReply, Reload = reload, Imported = imported});
+            return Post(endpoint, conversation, new CreateCustomerRequest { AutoReply = autoReply, Reload = reload, Imported = imported });
         }
 
         public Conversation UpdateConversation(Conversation conversation, bool reload = true)
@@ -139,7 +138,7 @@ namespace HelpScoutNet
 
         public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
         {
-            string endpoint = string.Format("conversations/{0}.json",conversationId);
+            string endpoint = string.Format("conversations/{0}.json", conversationId);
 
             return Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
         }
@@ -207,7 +206,7 @@ namespace HelpScoutNet
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
-            return Put(endpoint, customer, new PostOrPutRequest{ Reload = reload});
+            return Put(endpoint, customer, new PostOrPutRequest { Reload = reload });
         }
         #endregion
 
@@ -266,7 +265,7 @@ namespace HelpScoutNet
 
         public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
         {
-            string endpoint = string.Format("mailboxes/{0}/users.json",mailboxId);
+            string endpoint = string.Format("mailboxes/{0}/users.json", mailboxId);
 
             return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
@@ -281,7 +280,7 @@ namespace HelpScoutNet
 
             return Get<Paged<Workflow>>(endpoint, requestArg);
         }
-        
+
         #endregion
 
         #region Reports
@@ -486,7 +485,7 @@ namespace HelpScoutNet
             throw new HelpScoutApiException(error, body);
         }
 
-        private T Post<T>(string endpoint, T payload, IPostOrPutRequest request) 
+        private T Post<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             var client = InitHttpClient();
 
@@ -506,13 +505,13 @@ namespace HelpScoutNet
                 else
                 {
                     return payload;
-                }  
+                }
             }
-            
+
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
             throw new HelpScoutApiException(error, body);
         }
-        
+
         private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             var client = InitHttpClient();
@@ -522,7 +521,7 @@ namespace HelpScoutNet
 
             HttpResponseMessage response = client.PutAsync(BaseUrl + endpoint + ToQueryString(request), new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
             string body = response.Content.ReadAsStringAsync().Result;
-            
+
             if (response.IsSuccessStatusCode)
             {
                 if (request.Reload)
@@ -533,7 +532,7 @@ namespace HelpScoutNet
                 else
                 {
                     return payload;
-                }                
+                }
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
@@ -566,13 +565,13 @@ namespace HelpScoutNet
 
         private static string ToQueryString(IRequest request)
         {
-            NameValueCollection nvc = null;            
+            NameValueCollection nvc = null;
             if (request != null)
             {
                 nvc = request.ToNameValueCollection();
             }
-                
-            if(nvc == null) 
+
+            if (nvc == null)
                 return string.Empty;
 
             var array = (from key in nvc.AllKeys
@@ -582,4 +581,9 @@ namespace HelpScoutNet
             return "?" + string.Join("&", array);
         }
     }
+
+    //internal class SingleItem<T>
+    //{
+    //    public T Item { get; set; }
+    //}
 }
