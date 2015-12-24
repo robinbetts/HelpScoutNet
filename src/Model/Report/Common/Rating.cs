@@ -15,6 +15,11 @@ namespace HelpScoutNet.Model.Report.Common
         public ConversationType Type { get; set; }
         public int ThreadID { get; set; }
         public DateTime? ThreadCreatedAt { get; set; }
+        /// <summary>
+        /// 1 = Great
+        /// 2 = OK
+        /// 3 = Bad
+        /// </summary>
         public int RatingID { get; set; }
         public int RatingCustomerID { get; set; }
         public string RatingComments { get; set; }
