@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace HelpScoutNet.Model
 {
-    internal class SingleItem <T>
+    public class SingleItem <T>
     {
         public Task<T> Item { get; set; }
-
     }
 }
