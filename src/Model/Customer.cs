@@ -69,7 +69,8 @@ namespace HelpScoutNet.Model
         skype,
         yahoo,
         qq,
-        other
+        other,
+        xmmp
     }
 
     public class Website
