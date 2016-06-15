@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HelpScoutClientAsync.cs" />
+    <Compile Include="HelpScoutClient.cs" />
     <Compile Include="HelpScoutWebhookHelper.cs" />
     <Compile Include="Model\Conversation.cs" />
     <Compile Include="Model\Customer.cs" />

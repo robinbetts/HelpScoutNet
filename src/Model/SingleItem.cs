@@ -8,6 +8,6 @@ namespace HelpScoutNet.Model
 {
     public class SingleItem <T>
     {
-        public Task<T> Item { get; set; }
+        public T Item { get; set; }
     }
 }
