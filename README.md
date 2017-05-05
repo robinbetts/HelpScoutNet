@@ -1,9 +1,9 @@
 # HelpScoutNet
 HelpScoutNet is a .NET class library that provides an easy-to-use interface for the helpscout.net web api
 
-##Methods Implemented
+## Methods Implemented
 
-###Help Desk API
+### Help Desk API
 
 * Conversation
     * List Conversations
@@ -58,17 +58,17 @@ HelpScoutNet is a .NET class library that provides an easy-to-use interface for 
    * Workflow Statistics
 
 
-###Docs API
+### Docs API
 
 Nothing done yet
 
-##Examples 
+## Examples 
 
-###Initialization of the client
+### Initialization of the client
 ```csharp
 var client = new HelpScoutClient(ApiKey);
 ```
-###Search customers
+### Search customers
 ```csharp
 
 var client = new HelpScoutClient(ApiKey);
@@ -80,7 +80,7 @@ foreach (var searchresult in customersSearch.Items)
 
 ```
 
-###List Mailboxes
+### List Mailboxes
 ```csharp
 
 var mailboxes = client.ListMailboxes();
@@ -91,7 +91,7 @@ foreach (var mailboxStub in mailboxes.Items)
   
 ```
 
-###Create conversation
+### Create conversation
 ```csharp
 var newConv = client.CreateConversation(new Conversation
                 {
@@ -130,7 +130,7 @@ var newConv = client.CreateConversation(new Conversation
 client.DeleteConversation(111947647);
 ```
 
-###Add a note, create thread
+### Add a note, create thread
 ```csharp
 var thread = client.CreateThread(newconv.Id, new Thread
                 {
@@ -146,7 +146,7 @@ var thread = client.CreateThread(newconv.Id, new Thread
                 });
 ```
 
-###Create an attachment
+### Create an attachment
 ```csharp
 
 Byte[] bytes = File.ReadAllBytes(@"C:\Users\mathieu.kempe.SELZ\Desktop\sift-logo.png");
@@ -185,7 +185,7 @@ To add the attachment to a new conversation
 ```
 
 
-###Field Selectors 
+### Field Selectors 
 
 Each endpoint returns a default set of fields based upon the given request. However, you can override this behavior by supplying one or more field selectors to explicitly request the data you need.
 
