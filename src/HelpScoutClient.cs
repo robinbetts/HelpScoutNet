@@ -114,13 +114,17 @@ namespace HelpScoutNet
         public Conversation CreateConversation(Conversation conversation, bool imported = false, bool autoReply = false, bool reload = true)
         {
             string endpoint = "conversations.json";
-            return Post(endpoint, conversation, new CreateCustomerRequest { AutoReply = autoReply, Reload = reload, Imported = imported });
+            var result = Post(endpoint, conversation, new CreateCustomerRequest { AutoReply = autoReply, Reload = reload, Imported = imported });
+
+            return result?.Item;
         }
 
         public Conversation UpdateConversation(Conversation conversation, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json", conversation.Id);
-            return Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
+            var result = Put(endpoint, conversation, new PostOrPutRequest { Reload = reload });
+
+            return result?.Item;
         }
 
         public void DeleteConversation(int id)
@@ -141,7 +145,9 @@ namespace HelpScoutNet
         {
             string endpoint = string.Format("conversations/{0}.json", conversationId);
 
-            return Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
+            var result = Post(endpoint, thread, new PostOrPutRequest { Reload = reload, Imported = imported });
+
+            return result?.Item;
         }
 
         public string CreateAttachment(CreateAttachmentRequest request)
@@ -193,7 +199,9 @@ namespace HelpScoutNet
         {
             string endpoint = "customers.json";
 
-            return Post(endpoint, customer, new PostOrPutRequest { Reload = reload });
+            var result = Post(endpoint, customer, new PostOrPutRequest { Reload = reload });
+
+            return result?.Item;
         }
 
         /// <summary>
@@ -207,7 +215,9 @@ namespace HelpScoutNet
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
-            return Put(endpoint, customer, new PostOrPutRequest { Reload = reload });
+            var result = Put(endpoint, customer, new PostOrPutRequest { Reload = reload });
+
+            return result?.Item;
         }
         #endregion
 
@@ -422,7 +432,7 @@ namespace HelpScoutNet
 
         private void GetProductivityResolved()
         {
-            //Not Implimented
+            
         }
 
         private void GetProductivityResolutionTime()
@@ -485,7 +495,7 @@ namespace HelpScoutNet
             throw new HelpScoutApiException(error, body);
         }
 
-        private T Post<T>(string endpoint, T payload, IPostOrPutRequest request)
+        private SingleItem<T> Post<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             var client = InitHttpClient();
 
@@ -499,20 +509,17 @@ namespace HelpScoutNet
             {
                 if (request.Reload)
                 {
-                    T result = JsonConvert.DeserializeObject<T>(body);
-                    return result;
+                    return JsonConvert.DeserializeObject<SingleItem<T>>(body);                    
                 }
-                else
-                {
-                    return payload;
-                }
+
+                return null;
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
             throw new HelpScoutApiException(error, body);
         }
 
-        private T Put<T>(string endpoint, T payload, IPostOrPutRequest request)
+        private SingleItem<T> Put<T>(string endpoint, T payload, IPostOrPutRequest request)
         {
             var client = InitHttpClient();
 
@@ -526,13 +533,10 @@ namespace HelpScoutNet
             {
                 if (request.Reload)
                 {
-                    T result = JsonConvert.DeserializeObject<T>(body);
-                    return result;
+                    return JsonConvert.DeserializeObject<SingleItem<T>>(body);                 
                 }
-                else
-                {
-                    return payload;
-                }
+
+                return null;
             }
 
             var error = JsonConvert.DeserializeObject<HelpScoutError>(body);
