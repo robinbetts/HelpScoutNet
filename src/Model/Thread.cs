@@ -33,7 +33,8 @@ namespace HelpScoutNet.Model
     {
         published,
         draft,
-        underreview
+        underreview,
+        hidden
     }
 
     public enum ThreadStatus
