@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Remoting;
 using System.Text;
 using HelpScoutNet.Model;
 using HelpScoutNet.Model.Report;
@@ -11,8 +10,6 @@ using HelpScoutNet.Request;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using HelpScoutNet.Request.Report;
-using System.Threading.Tasks;
 
 namespace HelpScoutNet
 {
