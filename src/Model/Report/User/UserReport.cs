@@ -12,7 +12,7 @@ namespace HelpScoutNet.Model.Report.User.UserReports
     public class User
     {
         [DefaultValue(0)]
-        public int ID { get; set; }
+        public long Id { get; set; }
         public bool HasPhoto { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(IsoDateTimeConverter))]
@@ -72,7 +72,7 @@ namespace HelpScoutNet.Model.Report.User.UserReports
     {
         public string Name { get; set; }
         [DefaultValue(0)]
-        public long ID { get; set; }
+        public long Id { get; set; }
     }
 
     public class UserReport

@@ -65,7 +65,7 @@ namespace HelpScoutNet.Model.Report.Productivity
 
     public class DrillDownStats
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int Count { get; set; }
         public int PreviousCount { get; set; }
         public double Percent { get; set; }

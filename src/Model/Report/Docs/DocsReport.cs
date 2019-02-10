@@ -31,14 +31,14 @@ namespace HelpScoutNet.Model.Report
     public class SearchStats
     {
         public int Count { get; set; }
-        public string ID { get; set; }
+        public string Id { get; set; }
         public int Results { get; set; }
     }
 
     public class ArticleStats
     {
         public int Count { get; set; }
-        public string ID { get; set; }
+        public string Id { get; set; }
     }
 
     public class DeltaStats

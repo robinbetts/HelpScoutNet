@@ -9,8 +9,8 @@ namespace HelpScoutNet.Request.Report.User
 {
     public class UserViewByRequest : UserRequest
     {
-        public UserViewByRequest(int userID, DateTime? startTime, DateTime? endTime, DataResolution? viewBy = null)
-            : base(userID, startTime, endTime)
+        public UserViewByRequest(int userId, DateTime? startTime, DateTime? endTime, DataResolution? viewBy = null)
+            : base(userId, startTime, endTime)
         {
             ViewBy = viewBy;
         }

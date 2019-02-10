@@ -9,14 +9,14 @@ namespace HelpScoutNet.Model
     public class MailboxRef
     {
         [DefaultValue(0)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
     }
 
     public class Person
     {
         [DefaultValue(0)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -54,7 +54,7 @@ namespace HelpScoutNet.Model
     public class Attachment
     {
         [DefaultValue(0)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Hash { get; set; }
         public string MimeType { get; set; }
         public string Filename { get; set; }
@@ -83,7 +83,7 @@ namespace HelpScoutNet.Model
 
     public class Conversation
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public ConversationType Type { get; set; }
         public string Folder { get; set; }

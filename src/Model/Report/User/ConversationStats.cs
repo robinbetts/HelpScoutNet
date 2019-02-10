@@ -14,14 +14,14 @@ namespace HelpScoutNet.Model.Report.User
         public int FirstResponseTime { get; set; }
         public int ResolveTime { get; set; }
         public int RepliesSent { get; set; }
-        public int ID { get; set; }
+        public long ID { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         ConversationStatus Status { get; set; }
         public List<Customer> Customers { get; set; }
 
         public class Customer
         {
-            public int ID { get; set; }
+            public long Id { get; set; }
             public string Name { get; set; }
         }
     }

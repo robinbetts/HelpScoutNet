@@ -9,13 +9,13 @@ namespace HelpScoutNet.Request.Report.User
 {
     public class UserPagedRequest : PagedCompareRequest
     {
-        public UserPagedRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserPagedRequest(long userID, DateTime? startTime, DateTime? endTime)
             : base(startTime, endTime)
         {
             User = userID;
         }
 
-        public int User { get; set; }
+        public long User { get; set; }
 
         public override NameValueCollection ToNameValueCollection()
         {

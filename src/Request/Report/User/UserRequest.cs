@@ -9,10 +9,10 @@ namespace HelpScoutNet.Request.Report.User
 {
     public class UserRequest : CompareRequest
     {
-        public UserRequest(int userID, DateTime? startTime, DateTime? endTime)
+        public UserRequest(int userId, DateTime? startTime, DateTime? endTime)
             : base(startTime, endTime)
         {
-            User = userID;
+            User = userId;
         }
 
 

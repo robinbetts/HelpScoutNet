@@ -9,7 +9,7 @@ namespace HelpScoutNet.Model.Report.Common
     public class Tag
     {
         public string Name { get; set; }
-        public long ID { get; set; }
+        public long Id { get; set; }
         public string Color { get; set; }
     }
 }

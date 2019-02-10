@@ -8,7 +8,7 @@ namespace HelpScoutNet.Model
     {
         public long Id { get; set; }
         public string Number { get; set; }
-        public int MailboxId { get; set; }
+        public long MailboxId { get; set; }
         public string Subject { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public ConversationStatus Status { get; set; }

@@ -9,10 +9,10 @@ namespace HelpScoutNet.Model
     public class Folder
     {
         [DefaultValue(0)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public int TotalCount { get; set; }
         public int ActiveCount { get; set; }
         public DateTime? ModifiedAt { get; set; }
@@ -21,7 +21,7 @@ namespace HelpScoutNet.Model
     public class Mailbox
     {
         [DefaultValue(0)]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
         public string Email { get; set; }

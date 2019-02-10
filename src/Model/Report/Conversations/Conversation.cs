@@ -9,11 +9,11 @@ namespace HelpScoutNet.Model.Report.Conversations
 {
     public class Conversation
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int Number { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public ConversationType Type { get; set; }
-        public int MailboxID { get; set; }
+        public long MailboxID { get; set; }
         public bool Attachments { get; set; }
         public string Subject { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
@@ -24,7 +24,7 @@ namespace HelpScoutNet.Model.Report.Conversations
         public string CustomerEmail { get; set; }
         public List<int> CustomerIDs { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public int AssignedID { get; set; }
+        public long AssignedID { get; set; }
         public List<Tag> Tags { get; set; }
         public string AssignedName { get; set; }
     }

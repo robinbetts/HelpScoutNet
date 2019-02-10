@@ -10,8 +10,8 @@ namespace HelpScoutNet.Model
 {
     public class Workflow
     {
-        public int Id { get; set; }
-        public int MailboxId { get; set; }
+        public long Id { get; set; }
+        public long MailboxId { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
         public WorkflowType Type { get; set; }
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]

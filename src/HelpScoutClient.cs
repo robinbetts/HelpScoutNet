@@ -53,14 +53,14 @@ namespace HelpScoutNet
             return Get<Paged<Mailbox>>("mailboxes.json", requestArg);
         }
 
-        public Mailbox GetMailbox(int mailboxId, FieldRequest requestArg = null)
+        public Mailbox GetMailbox(long mailboxId, FieldRequest requestArg = null)
         {
             var singleItem = Get<Mailbox>(string.Format("mailboxes/{0}.json", mailboxId), requestArg);
 
             return singleItem;
         }
 
-        public Paged<Folder> GetFolder(int folderId, PageRequest requestArg = null)
+        public Paged<Folder> GetFolder(long folderId, PageRequest requestArg = null)
         {
             return Get<Paged<Folder>>(string.Format("/mailboxes/{0}/folders.json", folderId), requestArg);
         }
@@ -68,7 +68,7 @@ namespace HelpScoutNet
 
         #region Conversations
 
-        public Paged<Conversation> ListConversations(int mailboxId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversations(long mailboxId, ConversationRequest requestArg = null)
         {
 
             string endpoint = string.Format("mailboxes/{0}/conversations.json", mailboxId);
@@ -76,33 +76,33 @@ namespace HelpScoutNet
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsInFolder(int mailboxId, int folderId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversationsInFolder(long mailboxId, long folderId, ConversationRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/folders/{1}/conversations.json", mailboxId, folderId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsForCustomer(int mailboxId, int customerId, ConversationRequest requestArg = null)
+        public Paged<Conversation> ListConversationsForCustomer(long mailboxId, long customerId, ConversationRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, customerId);
 
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Paged<Conversation> ListConversationsForUser(int mailboxId, int userId, FieldRequest requestArg = null)
+        public Paged<Conversation> ListConversationsForUser(long mailboxId, long userId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("mailboxes/{0}/customers/{1}/conversations.json", mailboxId, userId);
             return Get<Paged<Conversation>>(endpoint, requestArg);
         }
 
-        public Conversation GetConversation(int conversationId, FieldRequest requestArg = null)
+        public Conversation GetConversation(long conversationId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("conversations/{0}.json", conversationId);
             return Get<SingleItem<Conversation>>(endpoint, requestArg).Item;
         }
 
-        public Attachment GetAttachement(int conversationId, FieldRequest requestArg = null)
+        public Attachment GetAttachement(long conversationId, FieldRequest requestArg = null)
         {
             string endpoint = string.Format("attachments/{0}/data.json", conversationId);
             return Get<SingleItem<Attachment>>(endpoint, requestArg).Item;
@@ -124,21 +124,21 @@ namespace HelpScoutNet
             return result?.Item;
         }
 
-        public void DeleteConversation(int id)
+        public void DeleteConversation(long id)
         {
             string endpoint = string.Format("conversations/{0}.json", id);
 
             Delete(endpoint);
         }
 
-        public void DeleteNote(int id)
+        public void DeleteNote(long id)
         {
             string endpoint = string.Format("notes/{0}.json", id);
 
             Delete(endpoint);
         }
 
-        public Thread CreateThread(int conversationId, Thread thread, bool imported = false, bool reload = true)
+        public Thread CreateThread(long conversationId, Thread thread, bool imported = false, bool reload = true)
         {
             string endpoint = string.Format("conversations/{0}.json", conversationId);
 
@@ -154,7 +154,7 @@ namespace HelpScoutNet
             return PostAttachment(endpoint, request);
         }
 
-        public void DeleteAttachment(string id)
+        public void DeleteAttachment(long id)
         {
             string endpoint = string.Format("attachments/{0}.json", id);
 
@@ -172,14 +172,14 @@ namespace HelpScoutNet
             return Get<Paged<Customer>>(endpoint, requestArg);
         }
 
-        public Paged<Customer> ListCustomers(int mailboxId, CustomerRequest requestArg = null)
+        public Paged<Customer> ListCustomers(long mailboxId, CustomerRequest requestArg = null)
         {
             string endpoint = string.Format("mailbox/{0}/customers.json", mailboxId);
 
             return Get<Paged<Customer>>(endpoint, requestArg);
         }
 
-        public Customer GetCustomer(int customerId, CustomerRequest requestArg = null)
+        public Customer GetCustomer(long customerId, CustomerRequest requestArg = null)
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
@@ -208,7 +208,7 @@ namespace HelpScoutNet
         /// <param name="customer">customer data to update</param>
         /// <param name="reload">if true return the new customer otherwise return the original customer</param>
         /// <returns>if reload is true return the new customer otherwise return the original customer</returns>
-        public Customer UpdateCustomer(int customerId, Customer customer, bool reload = true)
+        public Customer UpdateCustomer(long customerId, Customer customer, bool reload = true)
         {
             string endpoint = string.Format("customers/{0}.json", customerId);
 
@@ -257,7 +257,7 @@ namespace HelpScoutNet
             return Get<Paged<HelpScoutNet.Model.User>>(endpoint, requestArg);
         }
 
-        public HelpScoutNet.Model.User GetUser(int userId, FieldRequest requestArg)
+        public HelpScoutNet.Model.User GetUser(long userId, FieldRequest requestArg)
         {
             string endpoint = string.Format("users/{0}.json", userId);
 
@@ -271,7 +271,7 @@ namespace HelpScoutNet
             return Get<SingleItem<User>>(endpoint, requestArg).Item;
         }
 
-        public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(int mailboxId, FieldRequest requestArg)
+        public Paged<HelpScoutNet.Model.User> ListUserPerMailbox(long mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/users.json", mailboxId);
 
@@ -282,7 +282,7 @@ namespace HelpScoutNet
 
         #region Workflows
 
-        public Paged<Workflow> ListWorkflows(int mailboxId, FieldRequest requestArg)
+        public Paged<Workflow> ListWorkflows(long mailboxId, FieldRequest requestArg)
         {
             string endpoint = string.Format("mailboxes/{0}/workflows.json", mailboxId);
 

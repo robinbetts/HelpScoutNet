@@ -67,7 +67,7 @@ namespace HelpScoutNet.Model.Report.Conversations
     public class CustomerStat
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public long Id { get; set; }
         public int Count { get; set; }
         public double PreviousCount { get; set; }
         public double Percent { get; set; }
@@ -84,8 +84,8 @@ namespace HelpScoutNet.Model.Report.Conversations
     public class SavedReplyStat
     {
         public string Name { get; set; }
-        public int ID { get; set; }
-        public int MailboxID { get; set; }
+        public long Id { get; set; }
+        public long MailboxID { get; set; }
         public int Count { get; set; }
         public int PreviousCount { get; set; }
         public double Percent { get; set; }
@@ -102,7 +102,7 @@ namespace HelpScoutNet.Model.Report.Conversations
     public class WorkFlowStat
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public long Id { get; set; }
         public int Count { get; set; }
         public int PreviousCount { get; set; }
         public double Percent { get; set; }
