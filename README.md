@@ -1,7 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscout)
+[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscoutnet)
 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscout)
 # HelpScoutNet
 HelpScoutNet is a .NET class library that provides an easy-to-use interface for the helpscout.net v2.0 web api
 
