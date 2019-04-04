@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscoutnet)
+[![Build status]https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscoutnet)
 
 
 # HelpScoutNet
