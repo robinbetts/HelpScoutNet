@@ -1,62 +1,20 @@
-# HelpScoutNet
-HelpScoutNet is a .NET class library that provides an easy-to-use interface for the helpscout.net web api
+[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscout)
 
-## Methods Implemented
+
+[![Build status](https://ci.appveyor.com/api/projects/status/yoxiw6cx9ehbgf66?svg=true)](https://ci.appveyor.com/project/SelzEngineer/helpscout)
+# HelpScoutNet
+HelpScoutNet is a .NET class library that provides an easy-to-use interface for the helpscout.net v2.0 web api
+
+## Endpoints Implemented
 
 ### Help Desk API
 
-* Conversation
-    * List Conversations
-    * Get Conversations
-    * Get Attachment Data
-    * Create Conversation
-    * Update Conversation
-    * Create Thread
-    * Delete Conversation
-    * Delete Note
-    * Create Attachment
-    * Delete Attachment
-* Customers
-   * List Customers
-   * List Mailbox Customers
-   * Get Customer
-   * Create Customer
-   * Update Customer
-* Mailboxes
-    * List Mailboxes
-    * Get Mailbox
-    * Get Folders
-* Search
-    * Conversations
-    * Customers
-* Tags
-    * List Tags
-* Users
-    * List Users
-    * Get User
-    * List Users ny Mailbox
-* Workflows
-    * List Workflows
-* Reports
-   * Busy Time Statistics
-   * Customer Statistics
-   * Handle Time Statistics
-   * Multiple Time Range Statistics (Conversations)
-   * Multiple Time Range Statistics (Productivity)
-   * Multiple Time Range Statistics (Team)
-   * Multiple Time Range Statistics (User)
-   * New Conversation Statistics
-   * Replies to Resolve Statistics
-   * Response Time Statistics
-   * Saved Reply Statistics
-   * Tag Statistics
-   * Time Range Statistics (Conversations)
-   * Time Range Statistics (Productivity)
-   * Time Range Statistics (Team)
-   * Time Range Statistics (User)
-   * User Statistics (Team)
-   * Workflow Statistics
-
+* **Conversation**
+* **Customers**
+* **Mailboxes**
+* **Tags**
+* **Users**
+* **Workflows**
 
 ### Docs API
 
@@ -66,133 +24,118 @@ Nothing done yet
 
 ### Initialization of the client
 ```csharp
-var client = new HelpScoutClient(ApiKey);
+var client=new HelpScoutApiClient("clientId","clientSecret");
+//initialize token from the given credentials
+await client.GetToken(true);
 ```
-### Search customers
+### Customer Endpoints
+
+**List Customer**
+
 ```csharp
-
-var client = new HelpScoutClient(ApiKey);
-var customersSearch = client.SearchCustomers(new SearchRequest{ Query = "(customer:\"johnappleseed@gmail.com\")"});
-foreach (var searchresult in customersSearch.Items)
+//search customer by their first name, pass null to list 
+var searchQuery = new CustomerSearchQuery(){FirstName = "Otis" };
+var pagedCustomer = await client.Customers.List(searchQuery);
+foreach (var customer in pagedCustomer.Items)
 {
-    Console.WriteLine(searchresult.FirstName + searchresult.LastName);   
+    Console.WriteLine("First Name :{0}, Last Name: {1}",customer.FirstName,customer.LastName);
 }
+```
 
+**Get Customer Detail**
+
+```csharp
+//search customer by their first name, pass null to list 
+var customerDetail= await client.Customers.Get(id);
+Console.WriteLine($"First Name:{customerDetail.FirstName}");
+foreach (var email in customerDetail.Embedded.Emails)
+{
+    Console.WriteLine($"Email:{email.Value}, Type:{email.Type}");
+           
+}
 ```
 
 ### List Mailboxes
 ```csharp
-
-var mailboxes = client.ListMailboxes();
-foreach (var mailboxStub in mailboxes.Items)
-{    
-    Console.WriteLine(mailboxStub.Id);
-}
-  
+  var mailBoxList = await client.Mailboxes.List();
+  foreach (var mailBox in mailBoxList.Items)
+  {
+    Console.WriteLine($"{mailBox.Name}");
+  }
 ```
 
 ### Create conversation
 ```csharp
-var newConv = client.CreateConversation(new Conversation
+ var req = new ConversationCreateRequest
+       {
+                MailboxId = 177024,
+                Type = ConversationType.Email,
+                Subject = "Hey there!",
+                Tags = new List<string> { "high-priority" },
+                Status = ConversationStatus.Pending,
+                Customer = new Customer
                 {
-                    Type = ConversationType.email,
-                    Subject = "Testing the Helpscout API Mathieu",
-                    Mailbox = new MailboxRef
+                    Email = "arjuns@selz.com"
+                },
+                Threads = new List<ThreadCreateRequest>
+                {
+                   //add a note to this conversation
+                    new ThreadCreateRequest
                     {
-                        Id = 38556
+                        Type = ThreadType.Note,
+                        Text = "Can you please resolve this issue asap.",
                     },
-                    Status = ConversationStatus.active,
-                    Customer = new Person
+                    new ThreadCreateRequest
                     {
-                        Email = "johnappleseed@somemail.com",
-                    },
-
-                    Threads = new List<Thread>{
-                        new Thread
+                        Type = ThreadType.Customer,
+                        Text = "This issue keeps happening.",
+                        Customer = new CreateConservationThreadCustomer
                         {
-                            Type = ThreadType.message,
-                            Body = "This is the body of the email \n something else" + Environment.NewLine + "and again",
-                            Status = ThreadStatus.active,
-                            CreatedBy = new Person
-                            {    
-                                Id = 60895,
-                                Type = PersonType.user,
-                                Email = "mathieu@somemail.com"
-                            } 
+                            Email = "arjuns@selz.com"
                         }
-                     }
-
-                });
+                    }
+                }
+            };
+ var conversationId = await client.Conversations.Create(req);
+ Console.WriteLine($"Created Conversation Id: {conversationId}");
 
 ```
+### Get conversation detail
+```csharp
+  var conversationDetail = await client.Conversations.Get(conversationId);
+  Console.WriteLine($"Subject: {conversationDetail.Subject}");
+```
+
 ### Delete a conversation
 ```csharp
-client.DeleteConversation(111947647);
+await client.Conversations.Delete(conversationId);
 ```
 
-### Add a note, create thread
+### Creating Threads
 ```csharp
-var thread = client.CreateThread(newconv.Id, new Thread
-                {
-                    CreatedBy = new Person
-                    {
-                        Id = 60895,
-                        Type = PersonType.user,
-                        Email = "mathieu@somemail.com"
-                    },
-                    Type = ThreadType.note,
-                    Body = "This is a note from API",
-                    Status = ThreadStatus.active
-                });
-```
+var threadEndpoint = client.Conversations.Endpoints.Threads(conversationId);
+var customerThread = new CreateThreadRequest()
+{
+ Text = "This is a customer thread"
+};
+await threadEndpoint.CreateCustomerThread(customerThread,customerId);
+//Similarly, Chat, Phone, Reply threads can be created
+ 
 
-### Create an attachment
-```csharp
+ var noteThread = new CreateThreadRequest()
+{
+ Text = "This is a note thread"
+ 
+ Attachments=new List<Attachment>{
+     new Attachment{
+         FileName="Some attachment name",
+         MimeType="image/png",
+         Data=Convert.ToBase64String(File.ReadAllBytes("C:\\some-attachment.png"))
+     }
+ }
+};
+//note thread does not require customerId 
+ await threadEndpoint.CreateNoteThread(noteThread);
 
-Byte[] bytes = File.ReadAllBytes(@"C:\Users\mathieu.kempe.SELZ\Desktop\sift-logo.png");
-String file = Convert.ToBase64String(bytes);
-
-string fileHash = client.CreateAttachment(new CreateAttachmentRequest
-                                          {
-                                             FileName = "sift-logo.png",
-                                             MimeType = "image/png",
-                                             Data = file
-                                          });
-
-```
-
-To add the attachment to a new conversation
-
-```csharp
- var newConv = client.CreateConversation(new Conversation
-  {
-      ...
-      Threads = new List<Thread>{
-                        new Thread
-                        {
-                            ...
-                            Attachments = new List<Attachment>
-                            {
-                                new Attachment
-                                {
-                                    Hash = fileHash
-                                }
-                            }
-                        }
-                     }
-               });
-               
-```
-
-
-### Field Selectors 
-
-Each endpoint returns a default set of fields based upon the given request. However, you can override this behavior by supplying one or more field selectors to explicitly request the data you need.
-
-Instead of returning a complete customer object, you could return just the ID and lastname.
-
-```csharp
-
-client.GetCustomer(123, new CustomerRequest {Fields = new[] {"id", "lastName"}});
   
 ```
