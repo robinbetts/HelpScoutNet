@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpScoutClient", "HelpScoutClient\HelpScoutClient.csproj", "{5CE79EBB-FEA6-4385-805C-AEC7B6A05FC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpScoutClient.Tests", "HelpScoutClient.Tests\HelpScoutClient.Tests.csproj", "{E95107E4-25BB-47F2-9671-64F8FE07FF70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{E7ED80E8-99D2-44BA-9B40-102CC69397AF}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		helpers.cake = helpers.cake
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CE79EBB-FEA6-4385-805C-AEC7B6A05FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE79EBB-FEA6-4385-805C-AEC7B6A05FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE79EBB-FEA6-4385-805C-AEC7B6A05FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE79EBB-FEA6-4385-805C-AEC7B6A05FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E95107E4-25BB-47F2-9671-64F8FE07FF70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E95107E4-25BB-47F2-9671-64F8FE07FF70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E95107E4-25BB-47F2-9671-64F8FE07FF70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E95107E4-25BB-47F2-9671-64F8FE07FF70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FA79D27-B139-4B7F-95E6-3822B5064CD0}
+	EndGlobalSection
+EndGlobal
