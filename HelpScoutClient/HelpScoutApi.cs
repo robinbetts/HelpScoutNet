@@ -30,7 +30,7 @@ namespace HelpScout
         protected async Task<IApiResponse<T1>> RequestSingle<T1>(string fragment, object data = null,
             HttpMethod method = null)
         {
-            var client = await CreateClient();
+            var client = await CreateClient().ConfigureAwait(false);
             method = method ?? HttpMethod.Post;
 
             var strData = data != null ? JsonConvert.SerializeObject(data, SerializerSetting) : null;
@@ -40,11 +40,11 @@ namespace HelpScout
                 req.Content = data != null
                     ? new StringContent(strData, Encoding.UTF8, "application/json")
                     : null;
-                var response = await client.SendRequest(req);
+                var response = await client.SendRequest(req).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     //deserialize partial fragment ie, what is required only
-                    var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     return new ApiResponse<T1>
                     {
                         ResponseHeader = response.Headers,
@@ -57,7 +57,7 @@ namespace HelpScout
                 }
                 else
                 {
-                    var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var rsp = new ApiResponse<T1>
                     {
                         ResponseHeader = response.Headers,
@@ -81,7 +81,7 @@ namespace HelpScout
                     if (query.HasValue()) fragment = $"{fragment}?{query}";
                 }
 
-            return await GetCollectionInternal<TListItem, TSearchQuery>(fragment, criteria);
+            return await GetCollectionInternal<TListItem, TSearchQuery>(fragment, criteria).ConfigureAwait(false);
         }
 
         protected async Task<IApiResponse<PagedResult<TListItem>>> GetCollectionInternal<TListItem, TCriteria>(
@@ -95,7 +95,7 @@ namespace HelpScout
             //some endpoints are the child endpoint, to get the node name get the last word after the last slash
             var fragments = fragment.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             var collectionNodeName = fragments.Last();
-            var client = await CreateClient();
+            var client = await CreateClient().ConfigureAwait(false);
             {
                 if (criteria != null)
                     if (criteria is ISearchQuery searchQuery)
@@ -105,11 +105,11 @@ namespace HelpScout
                     }
 
                 var msg = new HttpRequestMessage(HttpMethod.Get, fragment);
-                var response = await client.SendRequest(msg);
+                var response = await client.SendRequest(msg).ConfigureAwait(false);
                 var result = new PagedResult<TListItem>();
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var parsed = JObject.Parse(content);
                     var collectionNode = parsed.SelectToken("_embedded")?.SelectToken(collectionNodeName);
                     if (collectionNode != null)
@@ -148,7 +148,7 @@ namespace HelpScout
         {
             if (!Client.TokenManager.IsInitialized)
                 throw new Exception("Token manager is not initialized. Initialize this by calling GetToken() method");
-            var token = await Client.TokenManager.GetToken();
+            var token = await Client.TokenManager.GetToken().ConfigureAwait(false);
 
 
             return Client.ClientFactory.GetClient(client =>
@@ -163,23 +163,23 @@ namespace HelpScout
 
         protected async Task<IApiResponse<TDetail>> GetResource<TDetail>(string res)
         {
-            return await RequestSingle<TDetail>(GetIdfiedEndpoint(res), method: HttpMethod.Get);
+            return await RequestSingle<TDetail>(GetIdfiedEndpoint(res), method: HttpMethod.Get).ConfigureAwait(false);
         }
 
         protected async Task<IApiResponse> DeleteResource(string res)
         {
-            return await RequestSingle<object>(GetIdfiedEndpoint(res), null, HttpMethod.Delete);
+            return await RequestSingle<object>(GetIdfiedEndpoint(res), null, HttpMethod.Delete).ConfigureAwait(false);
         }
 
         protected async Task<IApiResponse> CreateResource<TCreateRequest>(TCreateRequest data)
         {
-            return await RequestSingle<object>($"{GetEndPointName()}", data, HttpMethod.Post);
+            return await RequestSingle<object>($"{GetEndPointName()}", data, HttpMethod.Post).ConfigureAwait(false);
         }
 
         protected async Task<IApiResponse>
             UpdateResource<TCreateRequest>(string resourceIdentifier, TCreateRequest data)
         {
-            return await RequestSingle<object>(GetIdfiedEndpoint(resourceIdentifier), data, HttpMethod.Put);
+            return await RequestSingle<object>(GetIdfiedEndpoint(resourceIdentifier), data, HttpMethod.Put).ConfigureAwait(false);
         }
 
 

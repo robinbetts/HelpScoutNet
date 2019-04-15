@@ -9,7 +9,7 @@
     <Company>Selz.com</Company>
     <Product>HelpScoutNet</Product>
     <Description>HelpScoutNet is a .NET class library that provides an easy-to-use interface for the helpscout.net web api v2.0</Description>
-    <Version>7.0.0</Version>
+    <Version>7.1.0</Version>
     <PackageIconUrl>http://github-jobs.s3.amazonaws.com/ee1135c8-ed33-11e4-8499-9b433ae54d8f.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Selz/HelpScoutNet</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Selz/HelpScoutNet</PackageProjectUrl>

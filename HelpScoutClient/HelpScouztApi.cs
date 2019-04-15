@@ -31,8 +31,8 @@ namespace HelpScout
         {
             try
             {
-                await Gate.WaitAsync();
-                return token ?? (token = (await DoHttp()).Record);
+                await Gate.WaitAsync().ConfigureAwait(false);
+                return token ?? (token = (await DoHttp().ConfigureAwait(false)).Record);
             }
             finally
             {
@@ -45,7 +45,7 @@ namespace HelpScout
         public async Task<Token> GenerateNewToken()
         {
             token = null;
-            return await GetToken();
+            return await GetToken().ConfigureAwait(false);
         }
 
         private async Task<IApiResponse<Token>> DoHttp()
@@ -62,10 +62,10 @@ namespace HelpScout
             using (var req = new HttpRequestMessage(HttpMethod.Post, Tokenpi))
             {
                 req.Content = new StringContent(strData, Encoding.UTF8, "application/json");
-                var response = await client.SendRequest(req);
+                var response = await client.SendRequest(req).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     return new ApiResponse<Token>
                     {
                         ResponseHeader = response.Headers,
@@ -76,7 +76,7 @@ namespace HelpScout
                 }
                 else
                 {
-                    var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var rsp = new ApiResponse<Token>
                     {
                         ResponseHeader = response.Headers

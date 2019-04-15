@@ -16,25 +16,25 @@ namespace HelpScout.Customers
 
         public async Task Create(TCreate req)
         {
-            var resource = await CreateResource(req);
+            var resource = await CreateResource(req).ConfigureAwait(false);
             resource.WithValidation();
         }
 
         public async Task Delete(long id)
         {
-            var resource = await DeleteResource(id.ToString());
+            var resource = await DeleteResource(id.ToString()).ConfigureAwait(false);
             resource.WithValidation();
         }
 
         public async Task<PagedResult<TListItem>> List()
         {
-            var response = await GetCollection<TListItem, object>(null);
+            var response = await GetCollection<TListItem, object>(null).ConfigureAwait(false);
             return response.WithValidation();
         }
 
         public async Task Update(long id, TCreate req)
         {
-            var resource = await UpdateResource(id.ToString(), req);
+            var resource = await UpdateResource(id.ToString(), req).ConfigureAwait(false);
             resource.WithValidation();
         }
 

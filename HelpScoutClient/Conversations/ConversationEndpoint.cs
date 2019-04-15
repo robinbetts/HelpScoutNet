@@ -17,27 +17,27 @@ namespace HelpScout.Conversations
 
         public async Task<ConversationDetail> Get(long id)
         {
-            var resource = await GetResource<ConversationDetail>(id.ToString());
+            var resource = await GetResource<ConversationDetail>(id.ToString()).ConfigureAwait(false);
             return resource.WithValidation();
         }
 
         public async Task<long> Create(ConversationCreateRequest req)
         {
-            var resource = await CreateResource(req);
+            var resource = await CreateResource(req).ConfigureAwait(false);
             resource.WithValidation();
             return long.Parse(resource.GetHeaderValueSingle("Resource-Id"));
         }
 
         public async Task Delete(long id)
         {
-            var resource = await DeleteResource(id.ToString());
+            var resource = await DeleteResource(id.ToString()).ConfigureAwait(false);
             resource.WithValidation();
         }
 
         public async Task UpdateTags(long conversationid, IList<string> tags)
         {
             tags = tags ?? new List<string>();
-            var resource = await RequestSingle<object>($"conversations/{conversationid}/tags", tags);
+            var resource = await RequestSingle<object>($"conversations/{conversationid}/tags", tags).ConfigureAwait(false);
             resource.WithValidation();
         }
 
@@ -48,7 +48,7 @@ namespace HelpScout.Conversations
 
         public async Task<PagedResult<ConversationListItem>> List(ConversationSearchQuery query)
         {
-            var response = await GetCollection<ConversationListItem, ConversationSearchQuery>(query);
+            var response = await GetCollection<ConversationListItem, ConversationSearchQuery>(query).ConfigureAwait(false);
             return response.WithValidation();
         }
 
@@ -60,7 +60,7 @@ namespace HelpScout.Conversations
                 path = "/subject",
                 value = subject
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task ChangeCustomer(long conversationId, long customerId)
@@ -71,7 +71,7 @@ namespace HelpScout.Conversations
                 path = "/primaryCustomer.id",
                 value = customerId
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task PublishDraft(long conversationId)
@@ -82,7 +82,7 @@ namespace HelpScout.Conversations
                 path = "/draft",
                 value = true
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task MoveToMailbox(long conversationId, long mailboxId)
@@ -93,7 +93,7 @@ namespace HelpScout.Conversations
                 path = "/mailboxId",
                 value = mailboxId
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task ChangeStatus(long conversationId, ConversationStatus status)
@@ -104,7 +104,7 @@ namespace HelpScout.Conversations
                 path = "/status",
                 value = status.ToString().ToLowerInvariant()
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task ChangeOwner(long conversationId, long ownerId)
@@ -115,7 +115,7 @@ namespace HelpScout.Conversations
                 path = "/assignTo",
                 value = ownerId
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
         public async Task RemoveOwner(long conversationId, long ownerId)
@@ -126,13 +126,13 @@ namespace HelpScout.Conversations
                 path = "/assignTo",
                 value = ownerId
             };
-            await PerformPatch(conversationId, payload);
+            await PerformPatch(conversationId, payload).ConfigureAwait(false);
         }
 
 
         private async Task PerformPatch(long conversationId, object payload)
         {
-            var response = await Patch<object>($"/conversations/{conversationId}", payload);
+            var response = await Patch<object>($"/conversations/{conversationId}", payload).ConfigureAwait(false);
             response.WithValidation();
         }
 
