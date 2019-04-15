@@ -113,15 +113,18 @@ Task("Pack")
 
 Task("Push")
 .IsDependentOn("Build")
-.IsDependentOn("Tests")
+//.IsDependentOn("Tests")
 .IsDependentOn("Pack")
 .Does(()=>{
 
 	foreach (var package in GetFiles($"artifacts/pack/*.nupkg"))
     {
-		Information("Uploading artifacts...");
-		AppVeyor.UploadArtifact(package.FullPath);
-		Information("Upload completed.");
+		if(AppVeyor.IsRunningOnAppVeyor)
+		{
+			Information("Uploading artifacts to appveyor...");
+			AppVeyor.UploadArtifact(package.FullPath);
+			Information("Upload completed.");
+		}
 		PushToNuget(package.FullPath);
     }
 
@@ -153,6 +156,7 @@ void PushToMyget(string packagePath)
 void PushToNuget(string packagePath)
 {
 
+	try{
 	Information("Pushing Nuget Package to nuget");
 	DotNetCoreNuGetPush(packagePath, new DotNetCoreNuGetPushSettings
 	{
@@ -160,5 +164,10 @@ void PushToNuget(string packagePath)
 		ApiKey = EnvironmentVariable("NUGET_APIKEY")
 	});
 	Information("Nuget Push complete.");
-
+	}
+	catch(CakeException){
+		
+		}
+	
+		
 }
