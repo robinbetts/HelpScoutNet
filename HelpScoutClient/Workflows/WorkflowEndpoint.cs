@@ -11,20 +11,20 @@ namespace HelpScout.Workflows
 
         public async Task<UserDetail> GetResourceOwner()
         {
-            var response = await RequestSingle<UserDetail>("/users/me", null);
+            var response = await RequestSingle<UserDetail>("/users/me", null).ConfigureAwait(false);
             return response.WithValidation();
         }
 
 
         public async Task<UserDetail> Get(long userId)
         {
-            var response = await GetResource<UserDetail>(userId.ToString());
+            var response = await GetResource<UserDetail>(userId.ToString()).ConfigureAwait(false);
             return response.WithValidation();
         }
 
         public async Task<PagedResult<UserDetail>> List()
         {
-            var response = await GetCollection<UserDetail, object>(null);
+            var response = await GetCollection<UserDetail, object>(null).ConfigureAwait(false);
             return response.WithValidation();
         }
 
@@ -36,7 +36,7 @@ namespace HelpScout.Workflows
                 op = "replace",
                 path = "/status"
             };
-            var response = await Patch<object>($"/workflows/{workflowId}", data);
+            var response = await Patch<object>($"/workflows/{workflowId}", data).ConfigureAwait(false);
             response.WithValidation();
         }
 

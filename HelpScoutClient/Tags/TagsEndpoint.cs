@@ -10,7 +10,7 @@ namespace HelpScout.Tags
 
         public async Task<PagedResult<TagDetail>> List()
         {
-            var response = await GetCollection<TagDetail, object>(null);
+            var response = await GetCollection<TagDetail, object>(null).ConfigureAwait(false);
             return response.WithValidation();
         }
 

@@ -19,27 +19,27 @@ namespace HelpScout.Customers
 
         public async Task<CustomerDetail> Get(long id)
         {
-            var resource = await GetResource<CustomerDetail>(id.ToString());
+            var resource = await GetResource<CustomerDetail>(id.ToString()).ConfigureAwait(false);
             return resource.WithValidation();
         }
 
         public async Task<PagedResult<CustomerListItem>> List(CustomerSearchQuery query)
         {
-            var response = await GetCollection<CustomerListItem, CustomerSearchQuery>(query);
+            var response = await GetCollection<CustomerListItem, CustomerSearchQuery>(query).ConfigureAwait(false);
             return response.WithValidation();
         }
 
 
         public async Task<long> Create(CustomerCreateRequest req)
         {
-            var resource = await CreateResource(req);
+            var resource = await CreateResource(req).ConfigureAwait(false);
             resource.WithValidation();
             return long.Parse(resource.GetHeaderValueSingle("Resource-Id"));
         }
 
         public async Task Update(long id, CustomerCreateRequest req)
         {
-            var resource = await UpdateResource(id.ToString(), req);
+            var resource = await UpdateResource(id.ToString(), req).ConfigureAwait(false);
             resource.WithValidation();
         }
 

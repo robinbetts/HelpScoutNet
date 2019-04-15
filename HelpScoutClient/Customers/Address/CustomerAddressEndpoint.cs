@@ -13,26 +13,26 @@ namespace HelpScout.Customers.Address
 
         public async Task Create(AddressCreateRequest req)
         {
-            var resource = await CreateResource(req);
+            var resource = await CreateResource(req).ConfigureAwait(false);
             resource.WithValidation();
         }
 
         public async Task Delete()
         {
-            var resource = await DeleteResource(null);
+            var resource = await DeleteResource(null).ConfigureAwait(false);
             resource.WithValidation();
         }
 
         public async Task<AddressDetail> Get()
         {
-            var resource = await GetResource<AddressDetail>(null);
+            var resource = await GetResource<AddressDetail>(null).ConfigureAwait(false);
             return resource.WithValidation();
         }
 
 
         public async Task Update(AddressCreateRequest req)
         {
-            var resource = await UpdateResource(null, req);
+            var resource = await UpdateResource(null, req).ConfigureAwait(false);
             resource.WithValidation();
         }
 
