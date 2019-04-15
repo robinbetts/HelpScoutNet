@@ -113,7 +113,7 @@ Task("Pack")
 
 Task("Push")
 .IsDependentOn("Build")
-//.IsDependentOn("Tests")
+.IsDependentOn("Tests")
 .IsDependentOn("Pack")
 .Does(()=>{
 
