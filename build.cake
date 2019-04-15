@@ -112,7 +112,6 @@ Task("Pack")
 });
 
 Task("Push")
-.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && gitVersion.BranchName=="master")
 .IsDependentOn("Build")
 .IsDependentOn("Tests")
 .IsDependentOn("Pack")
@@ -123,24 +122,7 @@ Task("Push")
 		Information("Uploading artifacts...");
 		AppVeyor.UploadArtifact(package.FullPath);
 		Information("Upload completed.");
-
-		if(nugetPush)
-		{
-			if(AppVeyor.Environment.Repository.Tag.IsTag)
-				{
-					Information($"Tag Name: {AppVeyor.Environment.Repository.Tag.Name}");
-					PushToNuget(package.FullPath);
-				}
-			else
-			{
-				if(gitVersion.BranchName=="master")
-				{
-					PushToMyget(package.FullPath);
-				}
-			}
-		}
-
-
+		PushToNuget(package.FullPath);
     }
 
 });
