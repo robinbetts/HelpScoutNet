@@ -2,6 +2,6 @@ namespace HelpScout.Tests
 {
     public static class Constants
     {
-        public static long MailBoxId => 177024;
+        public static long MailBoxId => 180015;
     }
 }
