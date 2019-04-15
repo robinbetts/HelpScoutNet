@@ -112,7 +112,6 @@ Task("Pack")
 });
 
 Task("Push")
-.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && gitVersion.BranchName=="master")
 .IsDependentOn("Build")
 .IsDependentOn("Tests")
 .IsDependentOn("Pack")
@@ -120,27 +119,13 @@ Task("Push")
 
 	foreach (var package in GetFiles($"artifacts/pack/*.nupkg"))
     {
-		Information("Uploading artifacts...");
-		AppVeyor.UploadArtifact(package.FullPath);
-		Information("Upload completed.");
-
-		if(nugetPush)
+		if(AppVeyor.IsRunningOnAppVeyor)
 		{
-			if(AppVeyor.Environment.Repository.Tag.IsTag)
-				{
-					Information($"Tag Name: {AppVeyor.Environment.Repository.Tag.Name}");
-					PushToNuget(package.FullPath);
-				}
-			else
-			{
-				if(gitVersion.BranchName=="master")
-				{
-					PushToMyget(package.FullPath);
-				}
-			}
+			Information("Uploading artifacts to appveyor...");
+			AppVeyor.UploadArtifact(package.FullPath);
+			Information("Upload completed.");
 		}
-
-
+		PushToNuget(package.FullPath);
     }
 
 });
@@ -171,6 +156,7 @@ void PushToMyget(string packagePath)
 void PushToNuget(string packagePath)
 {
 
+	try{
 	Information("Pushing Nuget Package to nuget");
 	DotNetCoreNuGetPush(packagePath, new DotNetCoreNuGetPushSettings
 	{
@@ -178,5 +164,10 @@ void PushToNuget(string packagePath)
 		ApiKey = EnvironmentVariable("NUGET_APIKEY")
 	});
 	Information("Nuget Push complete.");
-
+	}
+	catch(CakeException){
+		
+		}
+	
+		
 }
