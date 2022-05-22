@@ -132,7 +132,7 @@ namespace HelpScout.Conversations
 
         private async Task PerformPatch(long conversationId, object payload)
         {
-            var response = await Patch<object>($"/conversations/{conversationId}", payload).ConfigureAwait(false);
+            var response = await Patch<object>($"conversations/{conversationId}", payload).ConfigureAwait(false);
             response.WithValidation();
         }
 
