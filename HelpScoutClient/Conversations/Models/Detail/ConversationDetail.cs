@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace HelpScout.Conversations.Models.Detail
 {
@@ -28,6 +29,7 @@ namespace HelpScout.Conversations.Models.Detail
         public IList<string> Bcc { get; set; }
         public PrimaryCustomer PrimaryCustomer { get; set; }
         public IList<CustomField> CustomFields { get; set; }
+        [JsonProperty("_Links")]
         public Links Links { get; set; }
     }
 }
